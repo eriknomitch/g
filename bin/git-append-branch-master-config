@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+if [[ ! -d .git ]] ; then
+    echo "fatal: Not a git repository"
+    return 1
+fi
+
+echo "[branch \"master\"]\n\tremote = origin\n\tmerge = refs/heads/master" >> .git/config

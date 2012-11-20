@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+git ls-files --deleted | xargs git rm -f
+

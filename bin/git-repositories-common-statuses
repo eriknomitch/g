@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+source /etc/zshrc-shared
+
+function git-repository-status
+{
+    if [[ -n $1 ]] ; then
+        repository_path=$1
+        cd $repository_path > /dev/null 2>&1
+        echo "------------------------------------"
+        pwd-tilde
+        echo "------------------------------------"
+        g
+    fi
+}
+
+# ------------------------------------------------
+# MAIN -------------------------------------------
+# ------------------------------------------------
+git-repository-status ~/.bin
+git-repository-status ~/.configs
+git-repository-status ~/.meta
+git-repository-status ~/.meta-materials
+

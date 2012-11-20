@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+URL_ESCAPE="$HOME/.bin/url-escape"
+
+# GIT HOOK STDIN
+GIT_STDIN=$(<&0)
+GIT_REV_OLD=`echo $GIT_STDIN | awk '{print $1}'`
+GIT_REV_NEW=`echo $GIT_STDIN | awk '{print $2}'`
+GIT_REV_NAME=`echo $GIT_STDIN | awk '{print $3}'`
+
+# GIT LOG
+GIT_COMMIT_LOG=`git log -n1`
+GIT_COMMIT_COMMITTER_NAME=`git log -n1 --pretty="format:%cn"`
+GIT_COMMIT_SUBJECT=`git log -n1 --pretty="format:%s"`
+
+# EMAIL
+EMAIL_SUBJECT=`$URL_ESCAPE "meta-materials commit ($GIT_COMMIT_COMMITTER_NAME): $GIT_COMMIT_SUBJECT"`
+EMAIL_BODY=`$URL_ESCAPE $GIT_COMMIT_LOG`
+EMAIL_FROM=`$URL_ESCAPE "Meta Notifier <notifier@meta.ai>"`
+KEY="want2say"
+
+function post-receive-email
+{
+    EMAIL_TO=$1
+    curl "http://eriknomitch.com/mailer.php?subject=$EMAIL_SUBJECT&body=$EMAIL_BODY&address_to=$EMAIL_TO&address_from=$EMAIL_FROM&key=$KEY"
+}   
+
+# MAIN
+post-receive-email "enomitch@gmail.com"
+post-receive-email "tijwel@gmail.com"
+

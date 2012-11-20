@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+if ( `git rev-parse > /dev/null 2>&1` ) ; then 
+    if [[ "$HOST" == "linode" ]] ; then
+        git ls-files -o --exclude-standard | wc -l
+    else
+        git ls-files --other --exclude-standard | wc -l | awk '{print $1}'
+    fi
+fi
