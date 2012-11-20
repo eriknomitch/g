@@ -1,6 +1,7 @@
 # ------------------------------------------------
 # GIT --------------------------------------------
 # ------------------------------------------------
+export PATH=$PATH:$HOME/.g/bin
 
 # Run a command and commit with the message of the command.
 function gc()
