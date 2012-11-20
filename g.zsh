@@ -213,9 +213,7 @@ chpwd()
       git-status-display
   fi
   
-  if ( `pwd-is-wd` ) ; then
-      echo -e "\033[30;1mpwd:\033[0m \033[33;1m"`pwd-tilde`
-  elif ( `pwd-is-git-repo --root` ) ; then
+  if ( `pwd-is-git-repo --root` ) ; then
       echo -e "\033[30;1mpwd:\033[0m \033[33;2m"`pwd-tilde`
   fi
 }
