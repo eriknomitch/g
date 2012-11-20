@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+if ( `git rev-parse > /dev/null 2>&1` ) ; then
+
+    if [[ $1 == "--root" ]] ; then
+        if [[ -e .git ]] ; then
+            return 0
+        fi
+        return 1
+    fi
+
+    return 0
+fi
+return 1
+
