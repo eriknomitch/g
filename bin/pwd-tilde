@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo $(pwd | sed -e "s,^$HOME,~,")
+
