@@ -11,6 +11,10 @@ Installation
 ------------
 Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc`.
 
+Commands
+--------
+`$ g lso` => `$ git ls-files --other --exclude-standard`
+
 Credits
 -------
 Erik Nomitch: erik@nomitch.com
