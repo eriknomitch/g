@@ -18,9 +18,7 @@ Commands
 
 **g**
 
-*No arguments*
-
-Will display a custom, colored, and formatted git status including:
+Without arguments, *g* will display a custom, colored, and formatted git status including:
 * Repository status (clean or unclean)
 * Current branch and number of branches
 * List of untracked files
