@@ -14,7 +14,6 @@ Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc
 Commands
 --------
 
-
 ###Status###
 
 **g**
@@ -24,6 +23,30 @@ Will display a custom, colored, and formatted git status including:
 * Current branch and number of branches
 * List of untracked files
 * Short diff
+
+###Fallback###
+
+If a defined *g* shortcut is not matched, arguments to *g* will fall back to git.
+
+###Quick Commands###
+
+**g cm \<commit-message\>**
+
+*Commit all with message*
+
+**g cmp \<commit-message\>**
+
+*Commit all with message and push*
+
+###Prompts###
+
+**g au**
+
+Prompts to add all untracked files in the current repository
+
+**g ru**
+
+Prompts to remove all untracked files in the current directory
 
 ###Aliases###
 
@@ -39,6 +62,10 @@ Will display a custom, colored, and formatted git status including:
 
 `git diff`
 
+**g s**
+
+`git status`
+
 **g ls**
 
 `git ls-files`
@@ -51,25 +78,17 @@ Will display a custom, colored, and formatted git status including:
 
 `git ls-files --other --exclude-standard`
 
-###Prompts###
+**g ph**
 
-**g au**
+`git push`
 
-Prompts to add all untracked files in the current repository
+**g pha**
 
-**g ru**
+`git push all`
 
-Prompts to remove all untracked files in the current directory
+**g pl**
 
-###Quick Commands###
-
-**g cm \<commit-message\>**
-
-*Commit all with message*
-
-**g cmp \<commit-message\>**
-
-*Commit all with message and push*
+`git pull`
 
 Credits
 -------
