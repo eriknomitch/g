@@ -1,6 +1,6 @@
 g
 =
-g is a set of Zsh functions to augment Git.
+A collection of Zsh functions to augment Git.
 
 Requirements
 ------------
