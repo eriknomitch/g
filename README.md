@@ -55,11 +55,11 @@ Will display a custom, colored, and formatted git status including:
 
 **g au**
 
-Is a prompt to add all untracked files in the current repository.
+Prompts to add all untracked files in the current repository
 
 **g ru**
 
-Is a propmpt to remove all untracked files in the current directory.
+Prompts to remove all untracked files in the current directory
 
 ###Quick Commands###
 
