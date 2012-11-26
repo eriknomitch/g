@@ -65,11 +65,11 @@ Prompts to remove all untracked files in the current directory
 
 **g cm \<commit-message\>**
 
-*Commit All with Message*
+*Commit all with message*
 
 **g cmp \<commit-message\>**
 
-*Commit All with Message and Push*
+*Commit all with message and push*
 
 Credits
 -------
