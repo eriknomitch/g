@@ -1,6 +1,9 @@
 # ================================================
 # G ==============================================
 # ================================================
+autoload -U compinit
+compinit
+
 export PATH=$PATH:$HOME/.g/bin
 
 # Run a command and commit with the message of the command.
