@@ -74,6 +74,8 @@ Prompts to remove all untracked files in the current directory
 
 **g lso**
 
+*List untracked files excluding ignored files*
+
 `git ls-files --other --exclude-standard`
 
 **g ps**
