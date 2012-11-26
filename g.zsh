@@ -164,11 +164,11 @@ function g()
         git status
         ;;
         # push
-        ph)
+        ps)
         git push
         ;;
         # push all
-        pha)
+        psa)
         git push --all
         ;;
         # pull

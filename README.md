@@ -76,11 +76,11 @@ Prompts to remove all untracked files in the current directory
 
 `git ls-files --other --exclude-standard`
 
-**g ph**
+**g ps**
 
 `git push`
 
-**g pha**
+**g psa**
 
 `git push all`
 
