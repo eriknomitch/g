@@ -13,7 +13,8 @@ Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc
 
 Commands
 --------
-`$ g lso` => `$ git ls-files --other --exclude-standard`
+**`g lso`**
+Is a wrapper for `git ls-files --other --exclude-standard`
 
 Credits
 -------
