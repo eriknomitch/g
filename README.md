@@ -1,6 +1,6 @@
 g
 =
-g is a set of ZSH functions and scripts to automate and/or shorten common git tasks.
+g is a set of Zsh functions to augment Git.
 
 Requirements
 ------------
