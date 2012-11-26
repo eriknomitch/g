@@ -14,6 +14,17 @@ Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc
 Commands
 --------
 
+
+###Status###
+
+*g*
+
+Will display a custom, colored, and formatted git status including:
+* Repository status (clean or unclean)
+* Current branch and number of branches
+* List of untracked files
+* Short diff
+
 ###Aliases###
 
 **g l**
