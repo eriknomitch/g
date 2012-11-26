@@ -18,15 +18,15 @@ Commands
 
 **g**
 
+*No arguments*
+
 Will display a custom, colored, and formatted git status including:
 * Repository status (clean or unclean)
 * Current branch and number of branches
 * List of untracked files
 * Short diff
 
-###Fallback###
-
-If a defined *g* shortcut is not matched, arguments to *g* will fall back to git.
+Any arguments to *g* will first try to match a shortcut.  If a *g* shortcut is not matched, arguments to *g* will fall back to git allowing usage of *g* as a normal alias to `git`.
 
 ###Quick Commands###
 
