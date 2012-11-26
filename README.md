@@ -54,11 +54,15 @@ Is a propmpt to remove all untracked files in the current directory.
 
 **g cm <commit-message>**
 
-Is a quick command for "commit all with message": `git commit --all --message <commit-message>`
+*Commit All with Message*
+
+Is a quick command for `git commit --all --message <commit-message>`
 
 **g cmp <commit-message>**
 
-Is a quick command for "commit all with message and push": `git commit --all --message <commit-message>` followed by `git push`
+*Commit All with Message and Push*
+
+Is a quick command for `git commit --all --message <commit-message>` followed by `git push`
 
 Credits
 -------
