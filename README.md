@@ -14,27 +14,33 @@ Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc
 Commands
 --------
 
-###Wrappers###
+###Aliases###
 
 **g l**
 
-Is a wrapper for `git log`
+`git log`
 
 **g b**
 
-Is a wrapper for `git branch`
+`git branch`
+
+**g d**
+
+`git diff`
 
 **g ls**
 
-Is a wrapper for `git ls-files`
+`git ls-files`
 
 **g lsd**
 
-Is a wrapper for `git ls-files --deleted`
+`git ls-files --deleted`
 
 **g lso**
 
-Is a wrapper for `git ls-files --other --exclude-standard`
+`git ls-files --other --exclude-standard`
+
+###Prompts###
 
 **g au**
 
@@ -43,6 +49,16 @@ Is a prompt to add all untracked files in the current repository.
 **g ru**
 
 Is a propmpt to remove all untracked files in the current directory.
+
+###Quick Commands###
+
+**g cm <commit-message>**
+
+Is a quick command for `git commit --all --message <commit-message>`
+
+**g cmp <commit-message>**
+
+Is a quick command for `git commit --all --message <commit-message>` followed by `git push`
 
 Credits
 -------
