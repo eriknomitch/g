@@ -17,7 +17,7 @@ Commands
 
 ###Status###
 
-*g*
+**g**
 
 Will display a custom, colored, and formatted git status including:
 * Repository status (clean or unclean)
