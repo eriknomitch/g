@@ -144,7 +144,7 @@ function _git_remove_untracked_prompt()
     read add_files
 
     if [[ $add_files == "y" ]] ; then
-      # FIX: Directories? rm -rf? Be careful.
+      # FIX: Does this handle directories? I think so...
       echo $g_lso | xargs rm
     fi
   fi
@@ -260,7 +260,14 @@ function g()
     _git_status_display
     return 0
   fi
-  
+
+  # Check for --help
+  if [[ $_g_command == "--help" ]] ; then
+    _usage
+    return 0
+  fi
+
+  # Shift to get the arguments sans "g"
   shift
 
   # With arguments, attempt to find the command based on the match
@@ -268,9 +275,7 @@ function g()
 
   # Command was found
   if [[ $? == 0 ]] ; then
-
     _echo_verbose "g: $_found_body $*"
-
     eval "$_found_body $*"
     return 0
   fi
