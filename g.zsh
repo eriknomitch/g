@@ -7,6 +7,7 @@
 # ------------------------------------------------
 _matches=()
 _bodies=()
+_commands_length=0
 
 # ------------------------------------------------
 # CONFIG->ZSH ------------------------------------
@@ -50,18 +51,21 @@ function _define_command()
   _matches+=($1)
   shift
   _bodies+=($*)
+
+  let "_commands_length += 1"
 }
 
 function _find_command()
 {
   _find_match=$1
 
-  for _match in $_matches ; do
-    if [[ $_find_match == $_match ]] ; then
-      echo "git grep"
+  for (( index = 0 ; index < $_commands_length ; index++)) ; do
+    if [[ $_find_match == $_matches[$index] ]] ; then
+      echo $_bodies[$index]
       return 0
     fi
   done
+
   return 1
 }
 
@@ -85,9 +89,9 @@ function _git_status_display()
   # status
   echo -en "     \033[37;mstatus:\033[0m    "
   if [[ $git_count_untracked == 0 && $git_count_diff == 0 ]] ; then
-      echo -e "\033[32;1mclean\033[0m "
+    echo -e "\033[32;1mclean\033[0m "
   else
-      echo -e "\033[31;1munclean\033[0m "
+    echo -e "\033[31;1munclean\033[0m "
   fi
 
   # diff
@@ -99,7 +103,7 @@ function _git_status_display()
   g lso | sed "s/^/                /"
 }
 
-function _git_add_untracked()
+function _git_all_tracked_or_prompt()
 {
   g_lso=`git ls-files --other --exclude-standard`
 
@@ -138,7 +142,7 @@ function _git_command()
   # Command was successful; Continue
   if [[ $? == 0 ]] ; then
 
-    _git_add_untracked
+    _git_all_tracked_or_prompt
 
     git commit --all -m $initial_arguments
 
@@ -170,13 +174,11 @@ function g()
 
   _found=`_find_command $_g_command`
 
+  echo $_found
+
   # Command was found
   if [[ $? == 0 ]] ; then
   fi
-
-  echo $?
-
-  echo $_found
 
   return
   # -----
@@ -190,7 +192,7 @@ function g()
     ;;
     # add untracked
     au)
-    _git_add_untracked $*
+    _git_all_tracked_or_prompt $*
     ;;
     # remove untracked
     ru)
