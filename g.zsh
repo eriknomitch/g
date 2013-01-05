@@ -13,6 +13,7 @@ _VERBOSE=true
 _matches=()
 _bodies=()
 _commands_length=0
+
 # ------------------------------------------------
 # CONFIG->ZSH ------------------------------------
 # ------------------------------------------------
@@ -95,13 +96,12 @@ function _git_status_display()
   git_count_branches=`git branch | wc -l | awk '{print $1}'`
   git_branch_current=`git-branch-current`
 
-  # git:
   echo -en "\033[30;1mgit:\033[0m "
 
-  # branch
+  # Show branches
   echo -e "branch:    \033[37;1m"$git_branch_current"\033[0m("$git_count_branches")"
 
-  # status
+  # Show status
   echo -en "     \033[37;mstatus:\033[0m    "
   if [[ $git_count_untracked == 0 && $git_count_diff == 0 ]] ; then
     echo -e "\033[32;1mclean\033[0m "
@@ -109,14 +109,14 @@ function _git_status_display()
     echo -e "\033[31;1munclean\033[0m "
   fi
 
-  # diff
+  # Show diff
   echo -e "     \033[37;mdiff:\033[0m     \033[37;1m"`git diff --shortstat`"\033[0m"
   git diff --numstat | sed "s/^/                /"
 
-  # untracked
+  # Show untracked
   echo -e "     \033[37;muntracked:\033[0m \033[37;1m"$git_count_untracked"\033[0m"
 
-  #g lso | sed "s/^/                /"
+  g lso | sed "s/^/                /"
 }
 
 function _git_all_tracked_or_prompt()
@@ -134,9 +134,25 @@ function _git_all_tracked_or_prompt()
   fi
 }
 
+function _git_remove_untracked_prompt()
+{
+  g_lso=`git ls-files --other --exclude-standard`
+
+  if [[ -n $g_lso ]] ; then
+    echo $g_lso
+    echo -en "\033[31;1mPermanently remove these files (y/n)?\033[0m "
+    read add_files
+
+    if [[ $add_files == "y" ]] ; then
+      # FIX: Directories? rm -rf? Be careful.
+      echo $g_lso | xargs rm
+    fi
+  fi
+}
+
 function _git_fallback()
 {
-  echo "g: Falling back to 'git' with 'git $*'"
+  echo "g: Falling back to git with 'git $*'"
   git $*
 }
 
@@ -152,11 +168,13 @@ _define_command s   "git status"
 _define_command ps  "git push"
 _define_command pl  "git pull"
 _define_command psa "git push --all"
+_define_command lso "git ls-files --other --exclude-standard"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
 # ------------------------------------------------
 _define_command au  "_git_all_tracked_or_prompt"
+_define_command ru  "_git_remove_untracked_prompt"
 
 # c: Git Command
 # ------------------------------------------------
@@ -203,42 +221,29 @@ function g()
 
   # With no arguments, print g's status
   if [[ -z $_g_command ]] ; then
-    return _git_status_display
+    _git_status_display
+    return 0
   fi
-
-  # With arguments, we try to match one of g's commands
+  
   shift
 
-  # Attempt to find the command based on the match
+  # With arguments, attempt to find the command based on the match
   _found_body=`_find_command $_g_command`
 
   # Command was found
   if [[ $? == 0 ]] ; then
 
-    _echo_verbose "g: Found: $_found_body $*"
+    _echo_verbose "g: $_found_body $*"
 
     eval "$_found_body $*"
     return 0
   fi
 
   # Command was not found, fallback to git
+  # FIX: Multiple args are broken
   _git_fallback $_original_arguments
 
   #case $_g_command in
-    ## remove untracked
-    #ru)
-    #g_lso=`git ls-files --other --exclude-standard`
-
-    #if [[ -n $g_lso ]] ; then
-        #echo $g_lso
-        #echo -en "\033[31;1mPermanently remove these files (y/n)?\033[0m "
-        #read add_files
-
-        #if [[ $add_files == "y" ]] ; then
-            #echo $g_lso | xargs rm
-        #fi
-    #fi
-    #;;
     ## list untracked
     #lso)
     #git ls-files --other --exclude-standard
