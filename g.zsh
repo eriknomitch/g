@@ -169,12 +169,16 @@ _define_command ps  "git push"
 _define_command pl  "git pull"
 _define_command psa "git push --all"
 _define_command lso "git ls-files --other --exclude-standard"
+_define_command lsd "git ls-files --deleted"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
 # ------------------------------------------------
 _define_command au  "_git_all_tracked_or_prompt"
 _define_command ru  "_git_remove_untracked_prompt"
+_define_command cm  "_git_commit_with_message"
+_define_command cmp "_git_commit_with_message --push"
+_define_command c   "_git_command"
 
 # c: Git Command
 # ------------------------------------------------
@@ -198,6 +202,38 @@ function _git_command()
     echo "fatal: Command failed. Not commiting."
     return 1
   fi
+}
+
+function _git_commit_with_message()
+{
+  #git commit -a -m "$2"
+    
+  #if [[ -z $2 ]] ; then
+    #echo "fatal: No commit message argument"
+    #return 1
+  #fi
+
+  #g_lso=`git ls-files --other --exclude-standard`
+
+  #do_commit=false
+
+  #if [[ -n $g_lso ]] ; then
+    #echo $g_lso
+    #echo
+    #echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
+    #read commit_anyways
+
+    #if [[ $commit_anyways == "y" ]] ; then
+        #do_commit=true
+    #fi
+  #else
+    #do_commit=true
+  #fi
+
+  #if ( $do_commit ) ; then
+    #git commit -a -m "$2" && git push --all
+    #g
+  #fi
 }
 
 # ------------------------------------------------
@@ -242,72 +278,5 @@ function g()
   # Command was not found, fallback to git
   # FIX: Multiple args are broken
   _git_fallback $_original_arguments
-
-  #case $_g_command in
-    ## list untracked
-    #lso)
-    #git ls-files --other --exclude-standard
-    #;;
-    ## list deleted
-    #lsd)
-    #git ls-files --deleted
-    #;;
-    ## commit with message
-    #cm)
-    #git commit -a -m "$2"
-    #;;
-    ## commit with message and push
-    #cmp)
-    #if [[ -z $2 ]] ; then
-      #echo "fatal: No commit message argument"
-      #return 1
-    #fi
-
-    #g_lso=`git ls-files --other --exclude-standard`
-
-    #do_commit=false
-
-    #if [[ -n $g_lso ]] ; then
-      #echo $g_lso
-      #echo
-      #echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
-      #read commit_anyways
-
-      #if [[ $commit_anyways == "y" ]] ; then
-          #do_commit=true
-      #fi
-    #else
-      #do_commit=true
-    #fi
-
-    #if ( $do_commit ) ; then
-      #git commit -a -m "$2" && git push --all
-      #g
-    #fi
-
-    #;;
-    ## tell git to set the standard default push
-    #cpdm)
-    #git config push.default matching
-    #;;
-    ## default
-    #"")
-    #if ( `pwd-is-git-repo` ) ; then
-      #_git_status_display
-    #fi
-    #;;
-    #"--help")
-    #_usage
-    #;;
-
-    ## Fallback:
-    ## Pass the arguments to git instead
-    #*)
-    #git $*
-    #if [[ $? == 1 ]] ; then
-      #_usage
-    #fi
-    #;;
-  #esac
 }
 
