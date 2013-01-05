@@ -100,7 +100,8 @@ function _git_status_display()
 
   # untracked
   echo -e "     \033[37;muntracked:\033[0m \033[37;1m"$git_count_untracked"\033[0m"
-  g lso | sed "s/^/                /"
+
+  #g lso | sed "s/^/                /"
 }
 
 function _git_all_tracked_or_prompt()
@@ -118,10 +119,16 @@ function _git_all_tracked_or_prompt()
   fi
 }
 
+function _git_fallback()
+{
+  echo "g: Falling back to 'git' with 'git $*'"
+  git $*
+}
+
 # ------------------------------------------------
 # DEFINE->COMMANDS->ALIASES ----------------------
 # ------------------------------------------------
-_define_command g   "git grep \$*"
+_define_command g   "git grep"
 _define_command l   "git log \$*"
 _define_command ls  "git ls-files \$*"
 
@@ -170,136 +177,147 @@ function _usage()
 function g()
 {
   _g_command=$1
+  _original_arguments=$*
+
+  # With no arguments, print g's status
+  if [[ -z $_g_command ]] ; then
+    return _git_status_display
+  fi
+
+  # With arguments, we try to match one of g's commands
   shift
 
-  _found=`_find_command $_g_command`
-
-  echo $_found
+  # Attempt to find the command based on the match
+  _found_body=`_find_command $_g_command`
 
   # Command was found
   if [[ $? == 0 ]] ; then
+    eval "$_found_body $*"
+    return 0
   fi
 
-  return
+  # Command was not found, fallback to git
+  _git_fallback $_original_arguments
+
   # -----
 
-  case $_g_command in
-    l)
-    _git_log
-    ;;
-    ls)
-    _git_ls_files
-    ;;
-    # add untracked
-    au)
-    _git_all_tracked_or_prompt $*
-    ;;
-    # remove untracked
-    ru)
-    g_lso=`git ls-files --other --exclude-standard`
+  #case $_g_command in
+    #l)
+    #_git_log
+    #;;
+    #ls)
+    #_git_ls_files
+    #;;
+    ## add untracked
+    #au)
+    #_git_all_tracked_or_prompt $*
+    #;;
+    ## remove untracked
+    #ru)
+    #g_lso=`git ls-files --other --exclude-standard`
 
-    if [[ -n $g_lso ]] ; then
-        echo $g_lso
-        echo -en "\033[31;1mPermanently remove these files (y/n)?\033[0m "
-        read add_files
+    #if [[ -n $g_lso ]] ; then
+        #echo $g_lso
+        #echo -en "\033[31;1mPermanently remove these files (y/n)?\033[0m "
+        #read add_files
 
-        if [[ $add_files == "y" ]] ; then
-            echo $g_lso | xargs rm
-        fi
-    fi
-    ;;
-    # branch
-    b)
-    git branch
-    ;;
-    # list untracked
-    lso)
-    git ls-files --other --exclude-standard
-    ;;
-    # list deleted
-    lsd)
-    git ls-files --deleted
-    ;;
-    # diff
-    d)
-    git diff
-    ;;
-    # commit with message
-    cm)
-    git commit -a -m "$2"
-    ;;
-    # commit with message and push
-    cmp)
-    if [[ -z $2 ]] ; then
-      echo "fatal: No commit message argument"
-      return 1
-    fi
+        #if [[ $add_files == "y" ]] ; then
+            #echo $g_lso | xargs rm
+        #fi
+    #fi
+    #;;
+    ## branch
+    #b)
+    #git branch
+    #;;
+    ## list untracked
+    #lso)
+    #git ls-files --other --exclude-standard
+    #;;
+    ## list deleted
+    #lsd)
+    #git ls-files --deleted
+    #;;
+    ## diff
+    #d)
+    #git diff
+    #;;
+    ## commit with message
+    #cm)
+    #git commit -a -m "$2"
+    #;;
+    ## commit with message and push
+    #cmp)
+    #if [[ -z $2 ]] ; then
+      #echo "fatal: No commit message argument"
+      #return 1
+    #fi
 
-    g_lso=`git ls-files --other --exclude-standard`
+    #g_lso=`git ls-files --other --exclude-standard`
 
-    do_commit=false
+    #do_commit=false
 
-    if [[ -n $g_lso ]] ; then
-      echo $g_lso
-      echo
-      echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
-      read commit_anyways
+    #if [[ -n $g_lso ]] ; then
+      #echo $g_lso
+      #echo
+      #echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
+      #read commit_anyways
 
-      if [[ $commit_anyways == "y" ]] ; then
-          do_commit=true
-      fi
-    else
-      do_commit=true
-    fi
+      #if [[ $commit_anyways == "y" ]] ; then
+          #do_commit=true
+      #fi
+    #else
+      #do_commit=true
+    #fi
 
-    if ( $do_commit ) ; then
-      git commit -a -m "$2" && git push --all
-      g
-    fi
+    #if ( $do_commit ) ; then
+      #git commit -a -m "$2" && git push --all
+      #g
+    #fi
 
-    ;;
-    # tell git to set the standard default push
-    cpdm)
-    git config push.default matching
-    ;;
-    # status
-    s)
-    git status
-    ;;
-    # push
-    ps)
-    git push
-    ;;
-    # grep
-    g)
-    _git_grep $*
-    ;;
-    # push all
-    psa)
-    git push --all
-    ;;
-    # pull
-    pl)
-    git pull
-    ;;
-    # default
-    "")
-    if ( `pwd-is-git-repo` ) ; then
-      _git_status_display
-    fi
-    ;;
-    "--help")
-    _usage
-    ;;
+    #;;
+    ## tell git to set the standard default push
+    #cpdm)
+    #git config push.default matching
+    #;;
+    ## status
+    #s)
+    #git status
+    #;;
+    ## push
+    #ps)
+    #git push
+    #;;
+    ## grep
+    #g)
+    #_git_grep $*
+    #;;
+    ## push all
+    #psa)
+    #git push --all
+    #;;
+    ## pull
+    #pl)
+    #git pull
+    #;;
+    ## default
+    #"")
+    #if ( `pwd-is-git-repo` ) ; then
+      #_git_status_display
+    #fi
+    #;;
+    #"--help")
+    #_usage
+    #;;
 
-    # Fallback:
-    # Pass the arguments to git instead
-    *)
-    git $*
-    if [[ $? == 1 ]] ; then
-      _usage
-    fi
-    ;;
-  esac
+    ## Fallback:
+    ## Pass the arguments to git instead
+    #*)
+    #git $*
+    #if [[ $? == 1 ]] ; then
+      #_usage
+    #fi
+    #;;
+  #esac
 }
 
