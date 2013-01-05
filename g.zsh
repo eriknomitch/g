@@ -3,12 +3,16 @@
 # ================================================
 
 # ------------------------------------------------
+# CONSTANTS --------------------------------------
+# ------------------------------------------------
+_VERBOSE=true
+
+# ------------------------------------------------
 # GLOBALS ----------------------------------------
 # ------------------------------------------------
 _matches=()
 _bodies=()
 _commands_length=0
-
 # ------------------------------------------------
 # CONFIG->ZSH ------------------------------------
 # ------------------------------------------------
@@ -43,6 +47,16 @@ chpwd()
 }
 
 # ------------------------------------------------
+# UTILITY ----------------------------------------
+# ------------------------------------------------
+function _echo_verbose()
+{
+  if ( $_VERBOSE ) ; then
+    echo $*
+  fi
+}
+
+# ------------------------------------------------
 # COMMANDS ---------------------------------------
 # ------------------------------------------------
 function _define_command()
@@ -59,7 +73,8 @@ function _find_command()
 {
   _find_match=$1
 
-  for (( index = 0 ; index < $_commands_length ; index++)) ; do
+  # FIX: This is breaking unless it's <= instead of <... Why?
+  for (( index = 0 ; index <= $_commands_length ; index++)) ; do
     if [[ $_find_match == $_matches[$index] ]] ; then
       echo $_bodies[$index]
       return 0
@@ -129,12 +144,19 @@ function _git_fallback()
 # DEFINE->COMMANDS->ALIASES ----------------------
 # ------------------------------------------------
 _define_command g   "git grep"
-_define_command l   "git log \$*"
-_define_command ls  "git ls-files \$*"
+_define_command l   "git log"
+_define_command ls  "git ls-files"
+_define_command b   "git branch"
+_define_command d   "git diff"
+_define_command s   "git status"
+_define_command ps  "git push"
+_define_command pl  "git pull"
+_define_command psa "git push --all"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
 # ------------------------------------------------
+_define_command au  "_git_all_tracked_or_prompt"
 
 # c: Git Command
 # ------------------------------------------------
@@ -192,6 +214,9 @@ function g()
 
   # Command was found
   if [[ $? == 0 ]] ; then
+
+    _echo_verbose "g: Found: $_found_body $*"
+
     eval "$_found_body $*"
     return 0
   fi
@@ -199,19 +224,7 @@ function g()
   # Command was not found, fallback to git
   _git_fallback $_original_arguments
 
-  # -----
-
   #case $_g_command in
-    #l)
-    #_git_log
-    #;;
-    #ls)
-    #_git_ls_files
-    #;;
-    ## add untracked
-    #au)
-    #_git_all_tracked_or_prompt $*
-    #;;
     ## remove untracked
     #ru)
     #g_lso=`git ls-files --other --exclude-standard`
@@ -226,10 +239,6 @@ function g()
         #fi
     #fi
     #;;
-    ## branch
-    #b)
-    #git branch
-    #;;
     ## list untracked
     #lso)
     #git ls-files --other --exclude-standard
@@ -237,10 +246,6 @@ function g()
     ## list deleted
     #lsd)
     #git ls-files --deleted
-    #;;
-    ## diff
-    #d)
-    #git diff
     #;;
     ## commit with message
     #cm)
@@ -279,26 +284,6 @@ function g()
     ## tell git to set the standard default push
     #cpdm)
     #git config push.default matching
-    #;;
-    ## status
-    #s)
-    #git status
-    #;;
-    ## push
-    #ps)
-    #git push
-    #;;
-    ## grep
-    #g)
-    #_git_grep $*
-    #;;
-    ## push all
-    #psa)
-    #git push --all
-    #;;
-    ## pull
-    #pl)
-    #git pull
     #;;
     ## default
     #"")
