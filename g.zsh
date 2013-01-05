@@ -1,11 +1,38 @@
 # ================================================
 # G ==============================================
 # ================================================
+
+# ------------------------------------------------
+# ZSH-CONFIG -------------------------------------
+# ------------------------------------------------
 autoload -U compinit
 compinit
 
+# ------------------------------------------------
+# PATH -------------------------------------------
+# ------------------------------------------------
 export PATH=$PATH:$HOME/.g/bin
 
+# ------------------------------------------------
+# USAGE ------------------------------------------
+# ------------------------------------------------
+function _usage()
+{
+  echo "usage: g [<aliased g command>|<git command>]"
+  echo 
+  echo "The g git aliases are:"
+  echo "   ls     list tracked files"
+  echo "   lso    list untracked files"
+  echo "   lsd    list deleted files"
+  echo "   d      diff"
+  echo "   cm     commit with message"
+  echo "   cmp    commit with message and push"
+  echo "   cpdm   set the standard branch to push as default"
+}
+
+# ------------------------------------------------
+# GIT-COMMAND (GC) -------------------------------
+# ------------------------------------------------
 # Run a command and commit with the message of the command.
 function gc()
 {
@@ -184,18 +211,8 @@ function g()
             git-status-display
         fi
         ;;
-        # usage
         "--help")
-        echo "usage: g [<aliased g command>|<git command>]"
-        echo 
-        echo "The g git aliases are:"
-        echo "   ls     list tracked files"
-        echo "   lso    list untracked files"
-        echo "   lsd    list deleted files"
-        echo "   d      diff"
-        echo "   cm     commit with message"
-        echo "   cmp    commit with message and push"
-        echo "   cpdm   set the standard branch to push as default"
+        _usage
         ;;
         # default
         *)
