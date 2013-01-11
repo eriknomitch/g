@@ -10,8 +10,15 @@ fi
 
 prompt "Are you sure you want to merge '$_branch_current' to '$_branch_destination'?"
 
+if [[ $? != 0 ]] ; then
+  return 1
+fi
+
 git checkout $_branch_destination
 git merge $_branch_current
 
 echo $?
 
+prompt "Do you want to delete the merged branch '$_branch_current'?"
+
+echo "FIX"
