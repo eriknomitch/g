@@ -17,8 +17,8 @@ fi
 git checkout $_branch_destination
 git merge $_branch_current
 
-echo $?
+if [[ $? == 0 ]] ; then
+  prompt "Do you want to delete the merged branch '$_branch_current'?"
+  git branch -d $_branch_current
+fi
 
-prompt "Do you want to delete the merged branch '$_branch_current'?"
-
-echo "FIX"
