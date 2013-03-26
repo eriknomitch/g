@@ -19,6 +19,9 @@ git merge $_branch_current
 
 if [[ $? == 0 ]] ; then
   prompt "Do you want to delete the merged branch '$_branch_current'?"
-  git branch -d $_branch_current
+
+  if [[ $? == 0 ]] ; then
+    git branch -d $_branch_current
+  fi
 fi
 
