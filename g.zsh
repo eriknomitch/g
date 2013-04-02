@@ -5,7 +5,7 @@
 # ------------------------------------------------
 # CONSTANTS --------------------------------------
 # ------------------------------------------------
-_VERBOSE=true
+_VERBOSE=false
 
 # ------------------------------------------------
 # GLOBALS ----------------------------------------
@@ -167,7 +167,9 @@ _define_command d   "git diff"
 _define_command s   "git status"
 _define_command ps  "git push"
 _define_command pl  "git pull"
+_define_command co  "git checkout"
 _define_command psa "git push --all"
+_define_command t   "git tag"
 _define_command lso "git ls-files --other --exclude-standard"
 _define_command lsd "git ls-files --deleted"
 
@@ -206,34 +208,48 @@ function _git_command()
 
 function _git_commit_with_message()
 {
-  #git commit -a -m "$2"
-    
-  #if [[ -z $2 ]] ; then
-    #echo "fatal: No commit message argument"
-    #return 1
-  #fi
+  _push=false
 
-  #g_lso=`git ls-files --other --exclude-standard`
+  if [[ $1 == "--push" ]] ; then
+    _push=true
+    shift
+  fi
 
-  #do_commit=false
+  _commit_message=$1
 
-  #if [[ -n $g_lso ]] ; then
-    #echo $g_lso
-    #echo
-    #echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
-    #read commit_anyways
+  if [[ -z $_commit_message ]] ; then
+    echo "fatal: No commit message passed."
+    return 1
+  fi
 
-    #if [[ $commit_anyways == "y" ]] ; then
-        #do_commit=true
-    #fi
-  #else
-    #do_commit=true
-  #fi
+  g_lso=`git ls-files --other --exclude-standard`
+  do_commit=false
 
-  #if ( $do_commit ) ; then
-    #git commit -a -m "$2" && git push --all
-    #g
-  #fi
+  if [[ -n $g_lso ]] ; then
+    echo $g_lso
+    echo
+    echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
+    read commit_anyways
+
+    if [[ $commit_anyways == "y" ]] ; then
+      do_commit=true
+    fi
+  else
+    do_commit=true
+  fi
+
+  # Perform the commit
+  if ( $do_commit ) ; then
+    git commit --all --message "$_commit_message"
+
+    # Perform the push?
+    if ( $_push ) ; then
+      git push --all
+    fi
+
+    # Status display
+    g
+  fi
 }
 
 # ------------------------------------------------
@@ -276,8 +292,13 @@ function g()
   # Command was found
   if [[ $? == 0 ]] ; then
     _echo_verbose "g: $_found_body $*"
-    eval "$_found_body $*"
-    return 0
+
+    # Concatenate the found body and the quoted arguments passed to the proper
+    # 'g' function.
+    eval "$_found_body ${(q)@}"
+
+    # Return whatever the eval returned
+    return $?
   fi
 
   # Command was not found, fallback to git
