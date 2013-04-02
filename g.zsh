@@ -263,7 +263,11 @@ function _usage()
   echo "usage: g [<aliased g command>|<git command>]"
   echo 
   echo "The g git aliases are:"
-  echo "   ls     list tracked files"
+
+  for (( index = 1; index <= $_commands_length ; index++ )) ; do
+    echo "   "$_matches[index]"\t"$_bodies[index]
+  done
+
 }
 
 # ------------------------------------------------
