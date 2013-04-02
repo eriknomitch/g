@@ -206,6 +206,9 @@ function _git_command()
   fi
 }
 
+# c: Git Commit with Message
+# ------------------------------------------------
+# Commit all with a message and possibly push.
 function _git_commit_with_message()
 {
   _push=false
