@@ -27,7 +27,7 @@ compdef g=git
 compctl -k "(ls lso lsd d cm cmp cpdm d s p)" g # FIX: compdef overrides these
 
 # Append g auxiliary scripts to $PATH
-export PATH=$PATH:$HOME/.g/bin
+export PATH=$PATH:$(dirname $0)/bin
 
 # Change working directory Zsh rule
 chpwd()
