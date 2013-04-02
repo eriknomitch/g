@@ -271,6 +271,38 @@ function _usage()
 }
 
 # ------------------------------------------------
+# GIT-COMMAND (GC) -------------------------------
+# ------------------------------------------------
+# Run a command and commit with the message of the command.
+function gc()
+{
+  initial_arguments=$*
+
+  # Execute all the arguments
+  $*
+
+  if [[ $? == 0 ]] ; then
+
+    g_lso=`git ls-files --other --exclude-standard`
+
+    if [[ -n $g_lso ]] ; then
+        echo $g_lso
+        echo -en "\033[32;1mAdd these files to be tracked (y/n)?\033[0m "
+        read add_files
+
+        if [[ $add_files == "y" ]] ; then
+            git add .
+        fi
+    fi
+
+    git commit --all -m $initial_arguments
+  else
+    echo "fatal: Command failed. Not commiting."
+    return 1
+  fi
+}
+
+# ------------------------------------------------
 # MAIN/G -----------------------------------------
 # ------------------------------------------------
 function g()
