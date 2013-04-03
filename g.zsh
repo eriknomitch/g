@@ -88,11 +88,30 @@ function _find_command()
 # ------------------------------------------------
 # DEFINE->HELPERS --------------------------------
 # ------------------------------------------------
+function _git_is_clean_work_tree() {
+  git rev-parse --verify HEAD >/dev/null || return 1
+  git update-index -q --ignore-submodules --refresh
+
+  if ! git diff-files --quiet --ignore-submodules ; then
+    return 1
+  fi
+
+  if ! git diff-index --cached --quiet --ignore-submodules HEAD -- ; then
+    return 1
+  fi
+
+  # Are there untracked files?
+  if [[ `git-count-untracked` -gt 0 ]] ; then
+    return 1
+  fi
+
+  return 0
+}
+
 function _git_status_display()
 {
   # FIX: this says that the dir is clean when we deleted some files and when we git-mv files. probably more
   git_count_untracked=`git-count-untracked`
-  git_count_diff=`git diff | wc -l | awk '{print $1}'`
   git_count_branches=`git branch | wc -l | awk '{print $1}'`
   git_branch_current=`git-branch-current`
 
@@ -103,7 +122,11 @@ function _git_status_display()
 
   # Show status
   echo -en "     \033[37;mstatus:\033[0m    "
-  if [[ $git_count_untracked == 0 && $git_count_diff == 0 ]] ; then
+
+  # Check status
+  _git_is_clean_work_tree
+
+  if [[ $? == 0 ]] ; then
     echo -e "\033[32;1mclean\033[0m "
   else
     echo -e "\033[31;1munclean\033[0m "
@@ -152,8 +175,8 @@ function _git_remove_untracked_prompt()
 
 function _git_fallback()
 {
-  echo "g: Falling back to git with 'git $*'"
-  git $*
+  _echo_verbose "g: Falling back to git with 'git $*'"
+  eval "git $*"
 }
 
 # ------------------------------------------------
@@ -308,7 +331,7 @@ function gc()
 function g()
 {
   _g_command=$1
-  _original_arguments=$*
+  _original_arguments=$@
 
   # With no arguments, print g's status
   if [[ -z $_g_command ]] ; then
