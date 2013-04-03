@@ -175,8 +175,8 @@ function _git_remove_untracked_prompt()
 
 function _git_fallback()
 {
-  echo "g: Falling back to git with 'git $*'"
-  git $*
+  _echo_verbose "g: Falling back to git with 'git $*'"
+  eval "git $*"
 }
 
 # ------------------------------------------------
@@ -331,7 +331,7 @@ function gc()
 function g()
 {
   _g_command=$1
-  _original_arguments=$*
+  _original_arguments=$@
 
   # With no arguments, print g's status
   if [[ -z $_g_command ]] ; then
