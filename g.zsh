@@ -92,13 +92,16 @@ function _git_is_clean_work_tree() {
   git rev-parse --verify HEAD >/dev/null || return 1
   git update-index -q --ignore-submodules --refresh
 
-  if ! git diff-files --quiet --ignore-submodules
-  then
+  if ! git diff-files --quiet --ignore-submodules ; then
     return 1
   fi
 
-  if ! git diff-index --cached --quiet --ignore-submodules HEAD --
-  then
+  if ! git diff-index --cached --quiet --ignore-submodules HEAD -- ; then
+    return 1
+  fi
+
+  # Are there untracked files?
+  if [[ `git-count-untracked` -gt 0 ]] ; then
     return 1
   fi
 
@@ -119,7 +122,11 @@ function _git_status_display()
 
   # Show status
   echo -en "     \033[37;mstatus:\033[0m    "
-  if (( `_git_is_clean_work_tree` )) ; then
+
+  # Check status
+  _git_is_clean_work_tree
+
+  if [[ $? == 0 ]] ; then
     echo -e "\033[32;1mclean\033[0m "
   else
     echo -e "\033[31;1munclean\033[0m "
