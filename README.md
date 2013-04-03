@@ -2,6 +2,8 @@ g
 =
 A collection of Zsh functions to augment Git.
 
+![g](eriknomitch.github.com/g/misc/g.png)
+
 Requirements
 ------------
 * Zsh
