@@ -2,7 +2,7 @@ g
 =
 A collection of Zsh functions to augment Git.
 
-![g](eriknomitch.github.com/g/misc/g.png)
+![g](https://raw.github.com/eriknomitch/g/master/misc/g.png)
 
 Requirements
 ------------
