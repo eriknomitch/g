@@ -85,11 +85,31 @@ function _find_command()
   return 1
 }
 
+function _is_clean_work_tree() {
+  git rev-parse --verify HEAD >/dev/null || return 1
+  git update-index -q --ignore-submodules --refresh
+
+  if ! git diff-files --quiet --ignore-submodules
+  then
+    return 1
+  fi
+
+  if ! git diff-index --cached --quiet --ignore-submodules HEAD --
+  then
+    return 1
+  fi
+
+  return 0
+}
+
 # ------------------------------------------------
 # DEFINE->HELPERS --------------------------------
 # ------------------------------------------------
 function _git_status_display()
 {
+  _is_clean_work_tree
+  echo $?
+
   # FIX: this says that the dir is clean when we deleted some files and when we git-mv files. probably more
   git_count_untracked=`git-count-untracked`
   git_count_diff=`git diff | wc -l | awk '{print $1}'`
