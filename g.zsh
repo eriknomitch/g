@@ -199,11 +199,13 @@ _define_command lsd "git ls-files --deleted"
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
 # ------------------------------------------------
-_define_command au  "_git_all_tracked_or_prompt"
-_define_command ru  "_git_remove_untracked_prompt"
-_define_command cm  "_git_commit_with_message"
-_define_command cmp "_git_commit_with_message --push"
-_define_command c   "_git_command"
+_define_command au   "_git_all_tracked_or_prompt"
+_define_command ru   "_git_remove_untracked_prompt"
+_define_command cm   "_git_commit_with_message"
+_define_command cmp  "_git_commit_with_message -p"
+_define_command cmps "_git_commit_with_message -p -s"
+_define_command cms  "_git_commit_with_message -s"
+_define_command c    "_git_command"
 
 # c: Git Command
 # ------------------------------------------------
@@ -234,20 +236,37 @@ function _git_command()
 # Commit all with a message and possibly push.
 function _git_commit_with_message()
 {
-  _push=false
+  # Parse arguments
+  # FIX: Really? What's a better way to get opts as booleans?
+  zparseopts -- p=push s=status_as_message
 
-  if [[ $1 == "--push" ]] ; then
+  _push=false
+  _status_as_message=false
+
+  if [[ $push == "-p" ]] ; then
     _push=true
     shift
   fi
+  
+  if [[ $status_as_message == "-s" ]] ; then
+    _status_as_message=true
+    shift
+  fi
 
-  _commit_message=$1
+  # Set commit message
+  if ( $_status_as_message ) ; then
+    _commit_message=`git status -s`
+  else
+    _commit_message=$1
+  fi
 
+  # Check for commit message
   if [[ -z $_commit_message ]] ; then
-    echo "fatal: No commit message passed."
+    echo "fatal: No commit message available."
     return 1
   fi
 
+  # Any untracked files?
   g_lso=`git ls-files --other --exclude-standard`
   do_commit=false
 
