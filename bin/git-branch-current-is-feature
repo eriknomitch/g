@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+if [[ `git-branch-current | grep -E "^feature/" | wc -l` -gt 0 ]] ; then
+  return 0
+fi
+return 1
