@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+# Ensure we're on a Git repo
+pwd-is-git-repo || return 1
+
+# Update the index
+git update-index -q --ignore-submodules --refresh
+
+# Are there any file changes?
+if ! git diff-files --quiet --ignore-submodules ; then
+  return 1
+fi
+
+# Are there any text changes?
+if ! git diff-index --cached --quiet --ignore-submodules HEAD -- ; then
+  return 1
+fi
+
+# Are there untracked files?
+#
+# FIX: I think you can remove this... I think it should get caught by the
+# diff-files.
+if [[ `git-count-untracked` -gt 0 ]] ; then
+  return 1
+fi
+
+return 0

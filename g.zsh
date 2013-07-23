@@ -88,6 +88,8 @@ function _find_command()
 # ------------------------------------------------
 # DEFINE->HELPERS --------------------------------
 # ------------------------------------------------
+
+# FIX: Use git-is-clean-work-tree
 function _git_is_clean_work_tree() {
   git rev-parse --verify HEAD >/dev/null || return 1
   git update-index -q --ignore-submodules --refresh
