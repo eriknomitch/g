@@ -207,7 +207,7 @@ _define_command au   "_git_all_tracked_or_prompt"
 _define_command ru   "_git_remove_untracked_prompt"
 _define_command cm   "_git_commit_with_message"
 _define_command cmp  "_git_commit_with_message -p"
-_define_command cmps "_git_commit_with_message -p -s"
+_define_command cmsp "_git_commit_with_message -p -s"
 _define_command cms  "_git_commit_with_message -s"
 _define_command c    "_git_command"
 
