@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+if [[ -z $1 ]] ; then
+  echo "fatal: No find query passed."
+  return 1
+fi
+
+# Add ./ to the file names to make it more like UNIX "find".
+git ls-files | grep -i $1 | sed "s/^/.\//"
