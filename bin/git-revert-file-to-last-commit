@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+# FIX: Ensure git directory
+
+test -z $1 && echo "fatal: File path argument not passed." && return 1
+
+git checkout -- $1
+
