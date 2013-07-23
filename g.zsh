@@ -39,7 +39,7 @@ chpwd()
   fi
 
   if ( `pwd-is-git-repo --root` ) ; then
-    _git_status_display
+    git-status-display
   fi
   
   if ( `pwd-is-git-repo --root` ) ; then
@@ -110,39 +110,39 @@ function _git_is_clean_work_tree() {
   return 0
 }
 
-function _git_status_display()
-{
-  # FIX: this says that the dir is clean when we deleted some files and when we git-mv files. probably more
-  git_count_untracked=`git-count-untracked`
-  git_count_branches=`git branch | wc -l | awk '{print $1}'`
-  git_branch_current=`git-branch-current`
+#function _git_status_display()
+#{
+  ## FIX: this says that the dir is clean when we deleted some files and when we git-mv files. probably more
+  #git_count_untracked=`git-count-untracked`
+  #git_count_branches=`git branch | wc -l | awk '{print $1}'`
+  #git_branch_current=`git-branch-current`
 
-  echo -en "\033[30;1mgit:\033[0m "
+  #echo -en "\033[30;1mgit:\033[0m "
 
-  # Show branches
-  echo -e "branch:    \033[37;1m"$git_branch_current"\033[0m("$git_count_branches")"
+  ## Show branches
+  #echo -e "branch:    \033[37;1m"$git_branch_current"\033[0m("$git_count_branches")"
 
-  # Show status
-  echo -en "     \033[37;mstatus:\033[0m    "
+  ## Show status
+  #echo -en "     \033[37;mstatus:\033[0m    "
 
-  # Check status
-  _git_is_clean_work_tree
+  ## Check status
+  #_git_is_clean_work_tree
 
-  if [[ $? == 0 ]] ; then
-    echo -e "\033[32;1mclean\033[0m "
-  else
-    echo -e "\033[31;1munclean\033[0m "
-  fi
+  #if [[ $? == 0 ]] ; then
+    #echo -e "\033[32;1mclean\033[0m "
+  #else
+    #echo -e "\033[31;1munclean\033[0m "
+  #fi
 
-  # Show diff
-  echo -e "     \033[37;mdiff:\033[0m     \033[37;1m"`git diff --shortstat`"\033[0m"
-  git diff --numstat | sed "s/^/                /"
+  ## Show diff
+  #echo -e "     \033[37;mdiff:\033[0m     \033[37;1m"`git diff --shortstat`"\033[0m"
+  #git diff --numstat | sed "s/^/                /"
 
-  # Show untracked
-  echo -e "     \033[37;muntracked:\033[0m \033[37;1m"$git_count_untracked"\033[0m"
+  ## Show untracked
+  #echo -e "     \033[37;muntracked:\033[0m \033[37;1m"$git_count_untracked"\033[0m"
 
-  g lso | sed "s/^/                /"
-}
+  #g lso | sed "s/^/                /"
+#}
 
 function _git_all_tracked_or_prompt()
 {
@@ -358,7 +358,7 @@ function g()
 
   # With no arguments, print g's status
   if [[ -z $_g_command ]] ; then
-    _git_status_display
+    git-status-display
     return 0
   fi
 
