@@ -4,6 +4,7 @@
 pwd-is-git-repo || return 1
 
 # Update the index
+# FIX: This seems to be doing funny things with the status when run.
 git update-index -q --ignore-submodules --refresh
 
 # Are there any file changes?
