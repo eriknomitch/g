@@ -199,6 +199,7 @@ _define_command t   "git tag"
 _define_command lso "git ls-files --other --exclude-standard"
 _define_command lsd "git ls-files --deleted"
 _define_command am  "git commit --all --amend --message"
+_define_command a   "git auto"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
