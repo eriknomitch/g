@@ -2,6 +2,9 @@
 # G ==============================================
 # ================================================
 
+# TODO: g cmp should check to see if the last commit had the same message as the
+# one you're trying to create and it should prompt.
+
 # ------------------------------------------------
 # CONSTANTS --------------------------------------
 # ------------------------------------------------
@@ -200,6 +203,7 @@ _define_command lso "git ls-files --other --exclude-standard"
 _define_command lsd "git ls-files --deleted"
 _define_command am  "git commit --all --amend --message"
 _define_command a   "git auto"
+_define_command ff  "git flow feature"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
