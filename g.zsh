@@ -204,6 +204,7 @@ _define_command lsd "git ls-files --deleted"
 _define_command am  "git commit --all --amend --message"
 _define_command a   "git auto"
 _define_command ff  "git flow feature"
+_define_command u   "git up"
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
@@ -325,6 +326,7 @@ function _usage()
 # GIT-COMMAND (GC) -------------------------------
 # ------------------------------------------------
 # Run a command and commit with the message of the command.
+# FIX: Also add gcp which pushes after.
 function gc()
 {
   initial_arguments=$*
@@ -395,4 +397,7 @@ function g()
   # FIX: Multiple args are broken
   _git_fallback $_original_arguments
 }
+
+_g() { case "$words[2]" in ff) words=(git flow feature); service=git; (( CURRENT+=2 )); _git;; esac }
+compdef _g g
 
