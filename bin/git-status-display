@@ -31,5 +31,11 @@ git ls-files --other --exclude-standard | sed "s/^/                /"
 
 # Git flow display if Git flow project
 # FIX: Weak way to test it we're on a Git flow project
-if ( `git-is-git-flow-repo` ) ; then echo "flow"
+if ( `git-is-git-flow-repo` ) ; then
+
+  # FIX: Zero features...
+  git_count_features=`git flow feature | wc -l`
+
+  echo -e "     \033[37;mfeatures:\033[0m \033[37;1m"$git_count_features"\033[0m"
+  git flow feature | sed "s/^  /       /"
 fi
