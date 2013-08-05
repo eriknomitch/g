@@ -398,6 +398,6 @@ function g()
   _git_fallback $_original_arguments
 }
 
-_g() { case "$words[2]" in ff) words=(git flow feature); service=git; (( CURRENT+=2 )); _git;; esac }
-compdef _g g
+#_g() { case "$words[2]" in ff) words=(git flow feature); service=git; (( CURRENT+=2 )); _git;; esac }
+#compdef _g g
 

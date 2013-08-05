@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+# FIX: Weak way to test it we're on a Git flow project
+if [[ `git branch | grep -E "^  feature/" | wc -l` -gt 0 ]] ; then
+  exit 0
+fi
+exit 1
