@@ -36,6 +36,6 @@ if ( `git-is-git-flow-repo` ) ; then
   # FIX: Zero features...
   git_count_features=`git branch | grep "^  feature/" | wc -l`
 
-  echo -e "     \033[37;mfeatures:\033[0m \033[37;1m"$git_count_features"\033[0m"
+  echo -e "     \033[37;mfeatures: \033[0m \033[37;1m"$git_count_features"\033[0m"
   #git flow feature | sed "s/^/       /"
 fi
