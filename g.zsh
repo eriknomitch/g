@@ -328,6 +328,8 @@ function _usage()
 # ------------------------------------------------
 # Run a command and commit with the message of the command.
 # FIX: Also add gcp which pushes after.
+#
+# This should be "g x" for git execute
 function gc()
 {
   initial_arguments=$*
