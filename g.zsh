@@ -60,6 +60,34 @@ function _echo_verbose()
   fi
 }
 
+function _read_prompt_response()
+{
+  read _response
+
+  if [[ $_response == "y" ]] ; then
+    return 0
+  fi
+  return 1
+}
+
+function _prompt_success()
+{
+  echo -en "\033[32;1m$1 (y/n)? \033[0m"
+  _read_prompt_response
+}
+
+function _prompt_warning()
+{
+  echo -en "\033[31;1m$1 (y/n)? \033[0m"
+  _read_prompt_response
+}
+
+function _prompt_danger()
+{
+  echo -en "\033[31;1m$1 (y/n)? \033[0m"
+  _read_prompt_response
+}
+
 # ------------------------------------------------
 # UTILITY->GIT -----------------------------------
 # ------------------------------------------------
