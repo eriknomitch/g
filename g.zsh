@@ -78,7 +78,7 @@ function _prompt_success()
 
 function _prompt_warning()
 {
-  echo -en "\033[31;1m$1 (y/n)? \033[0m"
+  echo -en "\033[33;1m$1 (y/n)? \033[0m"
   _read_prompt_response
 }
 
