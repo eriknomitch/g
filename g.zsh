@@ -332,7 +332,7 @@ function _git_commit_with_message()
 
   # Check for commit message
   if [[ -z $_commit_message ]] ; then
-    echo "fatal: Cannot commit with an empty message.."
+    echo "fatal: Cannot commit with an empty message."
     return 1
   fi
 
