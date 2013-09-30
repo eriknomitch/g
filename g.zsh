@@ -256,15 +256,26 @@ _define_command rnm "git branch --remote --no-merged"
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
 # ------------------------------------------------
-_define_command au   "_git_all_tracked_or_prompt"
-_define_command ru   "_git_remove_untracked_prompt"
-_define_command cm   "_git_commit_with_message"
-_define_command cmp  "_git_commit_with_message -p"
-_define_command cmsp "_git_commit_with_message -p -s"
-_define_command cms  "_git_commit_with_message -s"
-_define_command c    "_git_command"
+
+# Untracked file handling
+_define_command au "_git_all_tracked_or_prompt"
+_define_command ru "_git_remove_untracked_prompt"
+
+# Commit with message
+_define_command cm  "_git_commit_with_message"
+_define_command cmp "_git_commit_with_message -p"
+
+# Commit with short stat diff
+_define_command cs  "_git_commit_with_message -s"
+_define_command csp "_git_commit_with_message -p -s"
+
+# Commit with line diff
 _define_command cl   "_git_commit_line_diff" 
 _define_command clp  "_git_commit_line_diff -p" 
+
+# Shell commands
+# FIX: Make this _git_execute and "x"
+_define_command c    "_git_command"
 
 # c: Git Command
 # ------------------------------------------------
