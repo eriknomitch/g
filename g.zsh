@@ -332,8 +332,16 @@ function _git_commit_with_message()
 
   # Check for commit message
   if [[ -z $_commit_message ]] ; then
-    echo "fatal: No commit message available."
+    echo "fatal: Cannot commit with an empty message.."
     return 1
+  fi
+
+  # Confirm short stat commit message
+  if ( $_status_as_message ) ; then
+    echo $_commit_message
+    if ( ! _prompt_success "Commit with this short stat as message?" ) ; then
+      return 1
+    fi
   fi
 
   # Any untracked files?
@@ -341,6 +349,7 @@ function _git_commit_with_message()
 
   # Perform the commit
   if [[ $? == 0 ]] ; then
+  
     git commit --all --message "$_commit_message"
 
     # Perform the push?
@@ -378,7 +387,7 @@ function _git_commit_line_diff()
   _commit_message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
 
   if [[ $_commit_message == "" ]] ; then
-    echo "Cannot commit empty message from empty diff."
+    echo "fatal: Cannot commit with an empty message (i.e., there is no line diff)."
     return 1
   fi
 
