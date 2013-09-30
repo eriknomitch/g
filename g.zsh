@@ -218,6 +218,12 @@ _define_command cmsp "_git_commit_with_message -p -s"
 _define_command cms  "_git_commit_with_message -s"
 _define_command c    "_git_command"
 
+# Commit with lines as message: git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}""
+#
+# First, match the lines that begin with + or -... Then omit the filename lines
+# +++ or ---
+_define_command cmsl "_git_commit_with_message -s -l" 
+
 # c: Git Command
 # ------------------------------------------------
 # Run a command and commit with the message of the command.
