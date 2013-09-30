@@ -336,7 +336,7 @@ function _git_commit_line_diff()
   _commit_message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
 
   if [[ $_commit_message == "" ]] ; then
-    echo "fatal: Cannot commit empty message from empty diff."
+    echo "Cannot commit empty message from empty diff."
     return 1
   fi
 
