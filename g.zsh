@@ -239,7 +239,6 @@ _define_command cm   "_git_commit_with_message"
 _define_command cmp  "_git_commit_with_message -p"
 _define_command cmsp "_git_commit_with_message -p -s"
 _define_command cms  "_git_commit_with_message -s"
-# FIX: _git_execute
 _define_command c    "_git_command"
 _define_command cl   "_git_commit_line_diff" 
 
@@ -324,11 +323,28 @@ function _git_commit_with_message()
 # Commit all with a message of only the lines changed.
 function _git_commit_line_diff()
 {
+  # Check if we have anything to commit.
+  if ( _git_is_clean_work_tree) ; then
+    echo "Nothing to commit."
+    return 1
+  fi
+
+  # Diff the repository to create the message:
+  #
   # First, match the lines that begin with + or -... Then, omit the filename
   # descriptor lines (i.e., +++ or ---).
-  _message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
+  _commit_message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
 
-  echo $_message
+  if [[ $_commit_message == "" ]] ; then
+    echo "fatal: Cannot commit empty message from empty diff."
+    return 1
+  fi
+
+  echo $_commit_message
+
+  if ( prompt "Commit with this diff as message?" ) ; then
+    git commit --all --message "$_commit_message"
+  fi
 }
 
 # ------------------------------------------------
