@@ -70,8 +70,7 @@ function _git_prompt_if_untracked_files()
 
   if [[ -n $g_lso ]] ; then
     echo $g_lso
-    echo
-    echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
+    echo -en "\033[31;1mWarning: Untracked files exist. Commit anyways? (y/n) \033[0m "
     read commit_anyways
 
     if [[ $commit_anyways == "y" ]] ; then
@@ -306,13 +305,8 @@ function _git_commit_with_message()
   # Any untracked files?
   _git_prompt_if_untracked_files
 
-  #do_commit=false
-  #if  [[ $? == 0 ]] ; then
-    #do_commit=true
-  #fi
-
   # Perform the commit
-  if ( `_git_prompt_if_untracked_files` ) ; then
+  if [[ $? == 0 ]] ; then
     git commit --all --message "$_commit_message"
 
     # Perform the push?
