@@ -51,13 +51,37 @@ chpwd()
 }
 
 # ------------------------------------------------
-# UTILITY ----------------------------------------
+# UTILITY->SHELL ---------------------------------
 # ------------------------------------------------
 function _echo_verbose()
 {
   if ( $_VERBOSE ) ; then
     echo $*
   fi
+}
+
+# ------------------------------------------------
+# UTILITY->GIT -----------------------------------
+# ------------------------------------------------
+function _git_prompt_if_untracked_files()
+{
+  # Any untracked files?
+  g_lso=`git ls-files --other --exclude-standard`
+
+  if [[ -n $g_lso ]] ; then
+    echo $g_lso
+    echo
+    echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
+    read commit_anyways
+
+    if [[ $commit_anyways == "y" ]] ; then
+      return 0
+    fi
+  else
+    return 0
+  fi
+
+  return 1
 }
 
 # ------------------------------------------------
@@ -216,13 +240,9 @@ _define_command cm   "_git_commit_with_message"
 _define_command cmp  "_git_commit_with_message -p"
 _define_command cmsp "_git_commit_with_message -p -s"
 _define_command cms  "_git_commit_with_message -s"
+# FIX: _git_execute
 _define_command c    "_git_command"
-
-# Commit with lines as message: git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}""
-#
-# First, match the lines that begin with + or -... Then omit the filename lines
-# +++ or ---
-_define_command cmsl "_git_commit_with_message -s -l" 
+_define_command cl   "_git_commit_line_diff" 
 
 # c: Git Command
 # ------------------------------------------------
@@ -284,24 +304,15 @@ function _git_commit_with_message()
   fi
 
   # Any untracked files?
-  g_lso=`git ls-files --other --exclude-standard`
-  do_commit=false
+  _git_prompt_if_untracked_files
 
-  if [[ -n $g_lso ]] ; then
-    echo $g_lso
-    echo
-    echo -n "warning: Untracked files exist. Commit anyways (y/n)? "
-    read commit_anyways
-
-    if [[ $commit_anyways == "y" ]] ; then
-      do_commit=true
-    fi
-  else
-    do_commit=true
-  fi
+  #do_commit=false
+  #if  [[ $? == 0 ]] ; then
+    #do_commit=true
+  #fi
 
   # Perform the commit
-  if ( $do_commit ) ; then
+  if ( `_git_prompt_if_untracked_files` ) ; then
     git commit --all --message "$_commit_message"
 
     # Perform the push?
@@ -314,8 +325,20 @@ function _git_commit_with_message()
   fi
 }
 
+# cl: Git commit line diff
 # ------------------------------------------------
-# HELP -------------------------------------------
+# Commit all with a message of only the lines changed.
+function _git_commit_line_diff()
+{
+  # First, match the lines that begin with + or -... Then, omit the filename
+  # descriptor lines (i.e., +++ or ---).
+  _message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
+
+  echo $_message
+}
+
+# ------------------------------------------------
+# USAGE/HELP -------------------------------------
 # ------------------------------------------------
 function _usage()
 {
