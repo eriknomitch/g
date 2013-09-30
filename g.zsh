@@ -72,19 +72,19 @@ function _read_prompt_response()
 
 function _prompt_success()
 {
-  echo -en "\033[32;1m$1 (y/n)? \033[0m"
+  echo -en "\033[32;1m$1 (y/n) \033[0m"
   _read_prompt_response
 }
 
 function _prompt_warning()
 {
-  echo -en "\033[33;1m$1 (y/n)? \033[0m"
+  echo -en "\033[33;1m$1 (y/n) \033[0m"
   _read_prompt_response
 }
 
 function _prompt_danger()
 {
-  echo -en "\033[31;1m$1 (y/n)? \033[0m"
+  echo -en "\033[31;1m$1 (y/n) \033[0m"
   _read_prompt_response
 }
 
@@ -94,21 +94,18 @@ function _prompt_danger()
 function _git_prompt_if_untracked_files()
 {
   # Any untracked files?
-  g_lso=`git ls-files --other --exclude-standard`
+  if [[ -n `git ls-files --other --exclude-standard` ]] ; then
 
-  if [[ -n $g_lso ]] ; then
+    # Show them
     echo $g_lso
-    echo -en "\033[31;1mUntracked files exist. Commit anyways? (y/n) \033[0m "
-    read commit_anyways
 
-    if [[ $commit_anyways == "y" ]] ; then
-      return 0
-    fi
-  else
-    return 0
+    _prompt_warning "Untracked files exist. Commit anyways?"
+
+    return $?
   fi
 
-  return 1
+  # There were no untracked files
+  return 0
 }
 
 # ------------------------------------------------
@@ -204,10 +201,8 @@ function _git_all_tracked_or_prompt()
 
   if [[ -n $g_lso ]] ; then
     echo $g_lso
-    echo -en "\033[32;1mAdd these files to be tracked (y/n)?\033[0m "
-    read add_files
 
-    if [[ $add_files == "y" ]] ; then
+    if ( _prompt_success "Add these files to be tracked?" ) ; then
       git add .
     fi
   fi
@@ -368,9 +363,10 @@ function _git_commit_line_diff()
     return 1
   fi
 
+  # FIX: This will echo in color if shell code contains color characters.
   echo $_commit_message
 
-  if ( prompt "Commit with this diff as message?" ) ; then
+  if ( _prompt_success "Commit with this line diff as message?" ) ; then
     git commit --all --message "$_commit_message"
   fi
 }
@@ -409,13 +405,11 @@ function gc()
     g_lso=`git ls-files --other --exclude-standard`
 
     if [[ -n $g_lso ]] ; then
-        echo $g_lso
-        echo -en "\033[32;1mAdd these files to be tracked (y/n)?\033[0m "
-        read add_files
+      echo $g_lso
 
-        if [[ $add_files == "y" ]] ; then
-            git add .
-        fi
+      if ( _prompt_success "Add these files to be tracked?" ) ; then
+        git add .
+      fi
     fi
 
     git commit --all -m $initial_arguments
