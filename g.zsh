@@ -46,7 +46,7 @@ chpwd()
   fi
   
   if ( `pwd-is-git-repo --root` ) ; then
-    echo -e "\033[30;1mpwd:\033[0m \033[33;2m"`pwd-tilde`
+    echo -e "\033[30;1mpwd:\033[0m \033[33;2m`pwd-tilde`\033[0m"
   fi
 }
 
