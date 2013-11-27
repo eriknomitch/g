@@ -496,4 +496,7 @@ function g()
 
 #_g() { case "$words[2]" in ff) words=(git flow feature); service=git; (( CURRENT+=2 )); _git;; esac }
 #compdef _g g
+#
+# IDEA: Add g cfp which makes a message with the files changed appended to the
+# message.
 
