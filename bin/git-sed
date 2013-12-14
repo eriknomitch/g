@@ -40,7 +40,7 @@ if ( ! `git-is-clean-work-tree` && $replacement_made ) ; then
 
   _commit_message="Replaced '$sed_regex_match' with '$sed_regex_replace' via git-sed"
 
-  echo -e "\033[32;1mAuto-commit with message '$_commit_message'? (y/n)\033[0m "
+  echo -en "\033[32;1mAuto-commit with message '$_commit_message'? (y/n)\033[0m "
   read confirm
 
   if [[ $confirm == "y" ]] ; then
