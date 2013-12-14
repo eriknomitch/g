@@ -16,6 +16,7 @@ fi
 
 sed_regex_match=$1
 sed_regex_replace=$2
+replacement_made=false
 
 for tracked_file in `git ls-files`; do
   grep_results=`grep $sed_regex_match $tracked_file`
@@ -28,8 +29,23 @@ for tracked_file in `git ls-files`; do
     read confirm
 
     if [[ $confirm == "y" ]] ; then
+      replacement_made=true
       sed -i -e"s/$sed_regex_match/$sed_regex_replace/g" $tracked_file
     fi
   fi
 done
+
+# Attempt to make auto-commit
+if ( ! `git-is-clean-work-tree` && $replacement_made ) ; then
+
+  _commit_message="Replaced '$sed_regex_match' with '$sed_regex_replace' via git-sed"
+
+  echo -e "\033[32;1mAuto-commit with message '$_commit_message'? (y/n)\033[0m "
+  read confirm
+
+  if [[ $confirm == "y" ]] ; then
+    git commit --all --message=$_commit_message
+  fi
+
+fi
 
