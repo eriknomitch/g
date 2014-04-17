@@ -27,7 +27,7 @@ compinit
 
 # Completion rules
 compdef g=git
-compctl -k "(ls lso lsd d cm cmp cpdm d s p)" g # FIX: compdef overrides these
+compctl -k "(ls lso lsd d cm cmp cpdm d s p cg)" g # FIX: compdef overrides these
 
 # Append g auxiliary scripts to $PATH
 export PATH=$PATH:$(dirname $0)/bin
@@ -276,6 +276,27 @@ _define_command clp  "_git_commit_line_diff -p"
 # Shell commands
 # FIX: Make this _git_execute and "x"
 _define_command c    "_git_command"
+
+# Chained grep
+_define_command cg  "_git_chained_grep"
+
+# cg: Chained Grep
+# ------------------------------------------------
+# Run a command and commit with the message of the command.
+function _git_chained_grep()
+{
+  query_string=""
+  multi_grep="(`echo $* | tr " " "|"`)"
+
+  for query in $*
+  do
+    query_string+=$query" | grep "
+  done
+
+  query_string+="--color -E '$multi_grep'"
+
+  eval "git grep $query_string"
+}
 
 # c: Git Command
 # ------------------------------------------------
