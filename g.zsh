@@ -17,8 +17,8 @@ _matches=()
 _bodies=()
 _commands_length=0
 
-# FIX: This path will probably not be standard :/
-_git_completion_path=/usr/share/zsh/functions/Completion/Unix/_git
+# Find the Git completion file path
+_git_completion_path=`echo -n ${^fpath}/_git(N)`
 
 # ------------------------------------------------
 # CONFIG->ZSH ------------------------------------
