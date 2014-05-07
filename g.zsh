@@ -17,6 +17,9 @@ _matches=()
 _bodies=()
 _commands_length=0
 
+# FIX: This path will probably not be standard :/
+_git_completion_path=/usr/share/zsh/functions/Completion/Unix/_git
+
 # ------------------------------------------------
 # CONFIG->ZSH ------------------------------------
 # ------------------------------------------------
@@ -25,9 +28,11 @@ _commands_length=0
 autoload -U compinit
 compinit
 
-# Completion rules
-compdef g=git
-compctl -k "(ls lso lsd d cm cmp cpdm d s p cg)" g # FIX: compdef overrides these
+# We source the existing Git rules here so we have access to various
+# autocompletion rules.
+if [[ -f $_git_completion_path ]] ; then
+  source $_git_completion_path
+fi
 
 # Append g auxiliary scripts to $PATH
 export PATH=$PATH:$(dirname $0)/bin
@@ -233,18 +238,60 @@ function _git_fallback()
 # ------------------------------------------------
 # DEFINE->COMMANDS->ALIASES ----------------------
 # ------------------------------------------------
+# Define the commands and also define special
+# special _git-* functions for aliases. See /usr/share/zsh/functions/Completion/Unix/_git for documentation on this.
 _define_command g   "git grep"
+function _git-g () {
+  _git-grep
+}
+
 _define_command l   "git log"
+function _git-l () {
+  _git-log
+}
+
 _define_command ls  "git ls-files"
+function _git-ls () {
+  _git-ls-files
+}
+
 _define_command b   "git branch"
+function _git-b () {
+  _git-branch
+}
+
 _define_command d   "git diff"
+function _git-d () {
+  _git-diff
+}
+
 _define_command s   "git status"
-_define_command ss  "git status --short"
+function _git-s () {
+  _git-status
+}
+
 _define_command ps  "git push"
+function _git-ps () {
+  _git-push
+}
+
 _define_command pl  "git pull"
+function _git-pl () {
+  _git-pull
+}
+
 _define_command co  "git checkout"
-_define_command psa "git push --all"
+function _git-co () {
+  _git-checkout
+}
+
 _define_command t   "git tag"
+function _git-t () {
+  _git-tag
+}
+
+_define_command ss  "git status --short"
+_define_command psa "git push --all"
 _define_command lso "git ls-files --other --exclude-standard"
 _define_command lsd "git ls-files --deleted"
 _define_command am  "git commit --all --amend --message"
@@ -252,6 +299,9 @@ _define_command a   "git auto"
 _define_command ff  "git flow feature"
 _define_command u   "git up"
 _define_command rnm "git branch --remote --no-merged"
+
+# IDEA: Add g cfp which makes a message with the files changed appended to the
+# message.
 
 # ------------------------------------------------
 # DEFINE->COMMANDS->SPECIAL ----------------------
@@ -515,9 +565,39 @@ function g()
   _git_fallback $_original_arguments
 }
 
-#_g() { case "$words[2]" in ff) words=(git flow feature); service=git; (( CURRENT+=2 )); _git;; esac }
-#compdef _g g
-#
-# IDEA: Add g cfp which makes a message with the files changed appended to the
-# message.
+# ------------------------------------------------
+# COMPLETION -------------------------------------
+# ------------------------------------------------
 
+# Actually set the compdef to git
+compdef g=git
+
+#compctl -k "(ls lso lsd d cm cmp cpdm d s p cg)" g # FIX: compdef overrides these
+
+#function _g () {
+  #local _ret=1
+  #local cur cword prev
+
+  #cur=${words[CURRENT]}
+  #prev=${words[CURRENT-1]}
+  #cmd=${words[2]}
+
+  #let cword=CURRENT-1
+
+  #emulate zsh -c _git
+
+  ##case "$cmd" in
+    ##ls)
+      ##emulate zsh -c _git-ls-files
+      ##;;
+    ##g)
+      ##emulate zsh -c _git-grep
+      ##;;
+    ##*)
+      ##emulate zsh -c _git
+      ##;;
+  ##esac
+
+  #let _ret && _default && _ret=0
+  #return _ret
+#}
