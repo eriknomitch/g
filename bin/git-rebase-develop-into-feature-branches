@@ -7,12 +7,15 @@ if ( ! `git-is-clean-work-tree` ) ; then
   exit 1
 fi
 
+_original_branch=`git-branch-current`
+
 for _feature_branch in `git-flow-feature-branches`; do
   if ( _prompt_warning "Attempt to rebase 'develop' into '$_feature_branch'?" ) ; then
 
     git checkout "$_feature_branch"
     git rebase develop
 
+    # Rebase failed
     if [[ $? != 0 ]] ; then
       echo "warning: Rebase of 'develop' into '$_feature_branch' was not successful."
       echo
@@ -33,8 +36,16 @@ for _feature_branch in `git-flow-feature-branches`; do
           exit 1
           ;;
       esac
+
+    # Rebase was successful
+    else
+      echo "Rebase successful."
     fi
 
   fi
 done
+
+git checkout "$_original_branch"
+echo
+echo "Done. You are now on your original branch '$_original_branch'"
 
