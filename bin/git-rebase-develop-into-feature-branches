@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+source $(dirname $0)/../g.zsh
+
+if ( ! `git-is-clean-work-tree` ) ; then
+  echo "fatal: Your Git work tree is not clean. Commit or stash your changes first."
+  exit 1
+fi
+
+for _feature_branch in `git-flow-feature-branches`; do
+  if ( _prompt_warning "Attempt to rebase 'develop' into '$_feature_branch'?" ) ; then
+
+    git checkout "$_feature_branch"
+    git rebase develop
+
+    if [[ $? != 0 ]] ; then
+      echo "warning: Rebase of 'develop' into '$_feature_branch' was not successful."
+      echo
+
+      echo "Your options are:"
+      echo "  a) Abort rebase of this branch and move on to next feature branch."
+      echo "  x) Exit and attempt to fix rebase of this branch."
+
+      echo -n "> "
+      read decision
+
+      case $decision in
+        a)
+          git rebase --abort
+          ;;
+        x)
+          echo "Exiting in branch '$_feature_branch'."
+          exit 1
+          ;;
+      esac
+    fi
+
+  fi
+done
+
