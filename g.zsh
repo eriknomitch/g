@@ -202,6 +202,8 @@ function _git_is_clean_work_tree() {
 
 function _git_all_tracked_or_prompt()
 {
+  local g_lso
+
   g_lso=`git ls-files --other --exclude-standard`
 
   if [[ -n $g_lso ]] ; then
@@ -215,6 +217,8 @@ function _git_all_tracked_or_prompt()
 
 function _git_remove_untracked_prompt()
 {
+  local g_lso
+
   g_lso=`git ls-files --other --exclude-standard`
 
   if [[ -n $g_lso ]] ; then
@@ -527,6 +531,10 @@ function gc()
 # ------------------------------------------------
 function g()
 {
+  local _g_command
+  local _original_arguments
+  local _found_body
+
   _g_command=$1
   _original_arguments=$@
 
