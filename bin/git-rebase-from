@@ -18,6 +18,11 @@ if [[ -z $_target_branch ]] ; then
   exit 1
 fi
 
+if [[ $_target_branch == $_original_branch ]] ; then
+  echo "fatal: You are already on branch '$_target_branch'."
+  exit 1
+fi
+
 if ( _prompt_warning "Are you sure you want to rebase '$_original_branch' from '$_target_branch'?" ) ; then
   git checkout "$_target_branch"
   git rebase "$_original_branch"
