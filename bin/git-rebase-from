@@ -2,4 +2,45 @@
 
 source $(dirname $0)/../g.zsh
 
+local _original_branch
+local _target_branch
+
+_original_branch=`git-branch-current`
+_target_branch=$1
+
+if ( ! git-is-clean-work-tree ) ; then
+  echo "fatal: Your Git work tree is not clean. Commit or stash your changes first."
+  exit 1
+fi
+
+if [[ -z $_target_branch ]] ; then
+  echo "fatal: Did not pass target branch."
+  exit 1
+fi
+
+if ( _prompt_warning "Are you sure you want to rebase '$_original_branch' from '$_target_branch'?" ) ; then
+  git checkout "$_target_branch"
+  git rebase "$_original_branch"
+
+  # Rebase succceeded
+  if [[ $? == 0 ]] ; then
+
+    echo
+    echo "Rebase successful."
+    echo
+
+    if ( _prompt_success "Push '$_target_branch' to default remote?" ) ; then
+      git push
+    fi
+
+    if ( _prompt_success "Return to branch '$_original_branch'?" ) ; then
+      git checkout "$_original_branch"
+    fi
+
+  # Rebase failed
+  else
+    echo "fatal: Rebase failed.  Leaving you in '$_target_branch'."
+    exit 1
+  fi
+fi
 
