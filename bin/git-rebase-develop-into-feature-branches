@@ -42,7 +42,7 @@ for _feature_branch in `git-flow-feature-branches`; do
       echo
       echo "Rebase successful."
       echo
-      if ( _prompt_success "Do you want to push this branch '$_feature_branch' to your default remote?") ; then
+      if ( _prompt_success "-> Do you want to push this branch '$_feature_branch' to your default remote?") ; then
 
         git push
 
@@ -52,7 +52,7 @@ for _feature_branch in `git-flow-feature-branches`; do
           echo "Push failed. You probably need to force push."
           echo
 
-          if ( _prompt_warning "Do you want to force push this branch '$_feature_branch' to your default remote? WARNING: This a potentially destructive action.") ; then
+          if ( _prompt_warning "  -> Do you want to force push this branch '$_feature_branch' to your default remote? WARNING: This a potentially destructive action.") ; then
             git push --force
           fi
         fi
