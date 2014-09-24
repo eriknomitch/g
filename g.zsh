@@ -305,6 +305,7 @@ _define_command u   "git up"
 _define_command rnm "git branch --remote --no-merged"
 _define_command rdf "git-rebase-develop-into-feature-branches"
 _define_command rfm "git-rebase-from master"
+_define_command asd "git-auto-smart-diff"
 
 # IDEA: Add g cfp which makes a message with the files changed appended to the
 # message.
@@ -324,6 +325,10 @@ _define_command cmp "_git_commit_with_message -p"
 # Commit with short stat diff
 _define_command cs  "_git_commit_with_message -s"
 _define_command csp "_git_commit_with_message -p -s"
+
+# Commit with auto smart diff
+_define_command ca  "_git_commit_with_message -a" 
+_define_command cap "_git_commit_with_message -p -a" 
 
 # Commit with line diff
 _define_command cl   "_git_commit_line_diff" 
@@ -385,10 +390,11 @@ function _git_commit_with_message()
 {
   # Parse arguments
   # FIX: Really? What's a better way to get opts as booleans?
-  zparseopts -- p=push s=status_as_message
+  zparseopts -- p=push s=status_as_message a=auto_as_message
 
   _push=false
   _status_as_message=false
+  _auto_as_message=false
 
   if [[ $push == "-p" ]] ; then
     _push=true
@@ -399,14 +405,44 @@ function _git_commit_with_message()
     _status_as_message=true
     shift
   fi
+  
+  if [[ $auto_as_message == "-a" ]] ; then
+    _auto_as_message=true
+    shift
+  fi
 
-  # Set commit message
+  # Set commit message to something special?
+  
+  # Short stat:
   if ( $_status_as_message ) ; then
     _commit_message=`git status -s`
+
+  # Auto smart diff:
+  elif ( $_auto_as_message ) ; then
+
+    local _prefix
+    local _auto_smart_diff
+
+    _prefix=""
+    _auto_smart_diff=`git-auto-smart-diff --short`
+
+    if [[ -n $_auto_smart_diff ]] ; then
+      echo "fatal: Cannot commit an auto smart diff if the auto smart diff is empty."
+      return 1
+    fi
+
+    # If we have more arguments prefix them to the commit message.
+    if [[ -n $* ]] ; then
+      _prefix="$*: "
+    fi
+
+    _commit_message="$_prefix$_auto_smart_diff"
+
+  # Otherwise, just the argument
   else
     _commit_message=$1
   fi
-
+  
   # Check for commit message
   if [[ -z $_commit_message ]] ; then
     echo "fatal: Cannot commit with an empty message."
