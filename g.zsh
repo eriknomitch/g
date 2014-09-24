@@ -304,6 +304,7 @@ _define_command ff  "git flow feature"
 _define_command u   "git up"
 _define_command rnm "git branch --remote --no-merged"
 _define_command rdf "git-rebase-develop-into-feature-branches"
+_define_command rfm "git-rebase-from master"
 
 # IDEA: Add g cfp which makes a message with the files changed appended to the
 # message.
