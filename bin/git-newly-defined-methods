@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+function _newly_defined_ruby_methods()
+{
+  local new_ruby_methods
+
+  # Find + def, strip def, strip arguments, replace newline with ", "
+  new_ruby_methods=`git diff | \grep --color=never -E "^\+ *def " | sed "s/^+ *def //" | sed "s/(.*//" | tr "\n" "," `
+
+  # Strip trailing ", " delimiter
+  new_ruby_methods=`echo -n $new_ruby_methods | sed "s/,$//"`
+
+  # Replace delimters with ", " because tr can't do it (or I don't know how)
+  new_ruby_methods=`echo $new_ruby_methods | sed "s/,/, /g"`
+
+  echo "+rb: "$new_ruby_methods
+}
+
+_newly_defined_ruby_methods
+
