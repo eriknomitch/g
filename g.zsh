@@ -426,7 +426,7 @@ function _git_commit_with_message()
     _prefix=""
     _auto_smart_diff=`git-auto-smart-diff --short`
 
-    if [[ -n $_auto_smart_diff ]] ; then
+    if [[ -z $_auto_smart_diff ]] ; then
       echo "fatal: Cannot commit an auto smart diff if the auto smart diff is empty."
       return 1
     fi
