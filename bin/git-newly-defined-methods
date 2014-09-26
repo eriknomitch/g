@@ -4,6 +4,8 @@ function _newly_defined_ruby_methods()
 {
   local new_ruby_methods
 
+  # FIX: Needs to see if this method has just moved (would still have "+ "). Check vs "- "
+
   # Find + def, strip def, strip arguments, replace newline with ", "
   new_ruby_methods=`git diff | \grep --color=never -E "^\+ *def " | sed "s/^+ *def //" | sed "s/(.*//" | tr "\n" "," `
 
