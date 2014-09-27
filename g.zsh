@@ -294,18 +294,19 @@ function _git-t () {
   _git-tag
 }
 
-_define_command ss  "git status --short"
-_define_command psa "git push --all"
-_define_command lso "git ls-files --other --exclude-standard"
-_define_command lsd "git ls-files --deleted"
-_define_command am  "git commit --all --amend --message"
-_define_command a   "git auto"
-_define_command ff  "git flow feature"
-_define_command u   "git up"
-_define_command rnm "git branch --remote --no-merged"
-_define_command rdf "git-rebase-develop-into-feature-branches"
-_define_command rfm "git-rebase-from master"
-_define_command asd "git-auto-smart-diff"
+_define_command ss   "git status --short"
+_define_command psa  "git push --all"
+_define_command lso  "git ls-files --other --exclude-standard"
+_define_command lsd  "git ls-files --deleted"
+_define_command am   "git commit --all --amend --message"
+_define_command a    "git auto"
+_define_command ff   "git flow feature"
+_define_command u    "git up"
+_define_command rnm  "git branch --remote --no-merged"
+_define_command rdf  "git-rebase-develop-into-feature-branches"
+_define_command rfm  "git-rebase-from master"
+_define_command rfmy "git-rebase-from master --yes"
+_define_command asd  "git-auto-smart-diff"
 
 # IDEA: Add g cfp which makes a message with the files changed appended to the
 # message.
