@@ -1,0 +1,12 @@
+{
+  "default": {
+    "extensions": [".zsh", ".md"],
+    "files":      ["bin/*"]
+  },
+  "docs": {
+    "extensions": [".md"]
+  },
+  "git": {
+    "files": [".git/config", ".gitignore"]
+  }
+}

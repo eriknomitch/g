@@ -1,4 +1,0 @@
-#!/bin/zsh
-
-vim *.zsh bin/* README* vim-all
-
