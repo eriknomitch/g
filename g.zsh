@@ -412,10 +412,13 @@ function _git_commit_with_message()
   fi
 
   # Set commit message to something special?
+  local _commit_message
   
   # Short stat:
   if ( $_status_as_message ) ; then
-    _commit_message=`git status -s`
+
+    # Replace line breaks with ; and chomp the trailing ;
+    _commit_message=`echo \`git status -s | tr "\n" ";"\` | sed "s/;$//g"`
 
   # Auto smart diff:
   elif ( $_auto_as_message ) ; then
@@ -497,6 +500,7 @@ function _git_commit_line_diff()
   #
   # First, match the lines that begin with + or -... Then, omit the filename
   # descriptor lines (i.e., +++ or ---).
+  local _commit_message
   _commit_message=`git diff | grep -E "^\+|^\-" | grep -vE "^\+{3}|^\-{3}"`
 
   if [[ $_commit_message == "" ]] ; then
