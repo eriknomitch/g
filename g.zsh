@@ -113,6 +113,13 @@ function _git_prompt_if_untracked_files()
   return 0
 }
 
+function _prompt_and_force_push()
+{
+  if ( _prompt_danger "Force push this branch '`git-branch-current`' to your default remote? WARNING: This is potentially destructive." ) ; then
+    git push --force
+  fi
+}
+
 # ------------------------------------------------
 # COMMANDS ---------------------------------------
 # ------------------------------------------------
@@ -530,14 +537,18 @@ function _git_ammend_message()
 {
   local _commit_message
 
-  echo "Your latest commit is:"
-  echo
+  if [[ -n $1 ]] ; then
+    _commit_message=$1
+  else
+    echo "Your latest commit is:"
+    echo
 
-  git log -n 1
+    git log -n 1
 
-  echo
-  echo -n "Enter your ammended commit message: "
-  read _commit_message
+    echo
+    echo -n "Enter your ammended commit message: "
+    read _commit_message
+  fi
 
   if ( git commit --all --amend --message "$_commit_message" ) ; then
 
@@ -545,9 +556,8 @@ function _git_ammend_message()
     echo "Ammended."
     echo
 
-    if ( _prompt_danger "Force push this branch '`git-branch-current`' to your default remote? WARNING: This is potentially destructive." ) ; then
-      git push --force
-    fi
+    _prompt_and_force_push
+
   fi
 }
 
