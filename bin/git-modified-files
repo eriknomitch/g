@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+local modified_files
+
+modified_files=`\git diff --name-only`
+
+if [[ $1 == "--basename-only" ]] ; then
+  echo $modified_files | xargs -n1 basename
+else
+  echo $modified_files
+fi
