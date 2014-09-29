@@ -1,7 +1,8 @@
 {
   "default": {
     "extensions": [".zsh", ".md"],
-    "files":      ["bin/*"]
+    "files":      ["bin/*"],
+    "first_file": "g.zsh"
   },
   "docs": {
     "extensions": [".md"]

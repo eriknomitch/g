@@ -1,6 +1,14 @@
 #!/bin/zsh
 
+if ( ! `pwd-is-git-repo` ) ; then
+  exit 1
+fi
+
 # FIX: this says that the dir is clean when we deleted some files and when we git-mv files. probably more
+local git_count_untracked
+local git_count_branches
+local git_branch_current
+
 git_count_untracked=`git-count-untracked`
 git_count_branches=`git branch | wc -l | awk '{print $1}'`
 git_branch_current=`git-branch-current`
