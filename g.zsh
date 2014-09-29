@@ -298,7 +298,6 @@ _define_command ss   "git status --short"
 _define_command psa  "git push --all"
 _define_command lso  "git ls-files --other --exclude-standard"
 _define_command lsd  "git ls-files --deleted"
-_define_command am   "git commit --all --amend --message"
 _define_command a    "git auto"
 _define_command ff   "git flow feature"
 _define_command u    "git up"
@@ -341,6 +340,9 @@ _define_command c    "_git_command"
 
 # Chained grep
 _define_command cg  "_git_chained_grep"
+
+# Ammend message
+_define_command am   "_git_ammend_message"
 
 # cg: Chained Grep
 # ------------------------------------------------
@@ -517,6 +519,34 @@ function _git_commit_line_diff()
 
     if ( $_push ) ; then
       git push --all
+    fi
+  fi
+}
+
+# am: Ammend message
+# ------------------------------------------------
+# Ammend the last commit message and prompt to force push.
+function _git_ammend_message()
+{
+  local _commit_message
+
+  echo "Your latest commit is:"
+  echo
+
+  git log -n 1
+
+  echo
+  echo -n "Enter your ammended commit message: "
+  read _commit_message
+
+  if ( git commit --all --amend --message "$_commit_message" ) ; then
+
+    echo
+    echo "Ammended."
+    echo
+
+    if ( _prompt_danger "Force push this branch '`git-branch-current`' to your default remote? WARNING: This is potentially destructive." ) ; then
+      git push --force
     fi
   fi
 }
