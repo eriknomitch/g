@@ -1,0 +1,2 @@
+#!/bin/zsh
+grep path .gitmodules | sed 's/.*= //'
