@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+source $(dirname $0)/../g.zsh
+
+local files_found
+files_found=`git grep --name-only $*`
+
+echo $files_found
+echo
+
+if ( _prompt_success "Found these files for your query.  Open them in your editor?" ) ; then
+  echo $files_found | xargs bash -c '</dev/tty $EDITOR "$@"' ignoreme
+fi
