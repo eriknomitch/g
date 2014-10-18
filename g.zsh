@@ -313,6 +313,7 @@ _define_command rdf  "git-rebase-develop-into-feature-branches"
 _define_command rfm  "git-rebase-from master"
 _define_command rfmy "git-rebase-from master --yes"
 _define_command asd  "git-auto-smart-diff"
+_define_command eg   "git-edit-grep"
 
 # IDEA: Add g cfp which makes a message with the files changed appended to the
 # message.
