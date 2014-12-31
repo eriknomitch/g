@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+
+local grep_results
+
+
+grep_results=`\git grep "METAGREP: "`
+
+echo $grep_results | while read grep_result; do
+
+  file_path=`echo $grep_result | awk '{print $1}' | sed "s/:$//"`
+  metagrep_code=`echo $grep_result | sed "s/.*METAGREP: //"`
+
+  echo $file_path
+  rails runner "puts $metagrep_code"
+  echo
+done
+
