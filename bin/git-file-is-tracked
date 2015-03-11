@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+# http://stackoverflow.com/questions/2405305/git-how-to-tell-if-a-file-is-git-tracked-by-shell-exit-code
+git ls-files $1 --error-unmatch &>/dev/null
