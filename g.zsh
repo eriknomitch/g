@@ -454,7 +454,7 @@ function _git_commit_with_message()
 
   # Otherwise, just the argument
   else
-    _commit_message=$1
+    _commit_message=$*
   fi
   
   # Check for commit message
