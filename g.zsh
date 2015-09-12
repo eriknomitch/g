@@ -40,7 +40,16 @@ export PATH=$PATH:$(dirname $0)/bin
 # Change working directory Zsh rule
 chpwd()
 {
-  if [[ `uname` == "Darwin" ]] ; then
+  # Check for shell level (SHLVL) beacuse we don't want this happening in scripts.
+  #
+  # Check for $0 to be 'zsh' because we don't want this happening in functions.
+  # FIX: Doesn't work. ^^^
+  if [[ $SHLVL != 1 || $SKIP_CHPWD == true ]] ; then
+    return 0
+  fi
+
+  # FIX: IMPORTANT: This is specific to you...
+  if [[ `uname` == "Darwin" && $SHLVL == 1 ]] ; then
     ls -lh -G
   else
     ls -lh --color
