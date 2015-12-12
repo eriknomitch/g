@@ -38,7 +38,7 @@ fi
 export PATH=$PATH:$(dirname $0)/bin
 
 # Change working directory Zsh rule
-chpwd()
+_g_chpwd()
 {
   # Check for shell level (SHLVL) beacuse we don't want this happening in scripts.
   #
