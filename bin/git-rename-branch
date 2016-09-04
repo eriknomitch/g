@@ -1,0 +1,42 @@
+#!/bin/zsh
+
+source $(dirname $0)/../g.zsh
+
+function _usage() {
+  echo "usage"
+}
+
+function _usage_and_exit() {
+  _usage
+  exit 1
+}
+
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+if [[ $# = 1 ]]; then
+  _current_branch_name=`git-branch-current`
+  _new_branch_name=$1
+elif [[ $# = 2 ]] ; then
+  _current_branch_name=$1
+  _new_branch_name=$2
+else
+  _usage_and_exit
+fi
+
+if [[ $_current_branch_name = "master" ]]; then
+  echo "fatal: You cannot rename the master branch."
+  exit 1
+fi
+
+echo "This will rename branch $_current_branch_name to $_new_branch_name locally."
+echo
+echo "Afterwards, you'll be promppted to delete the old branch on origin and push the new one."
+echo
+_prompt_warning "Continue?"
+
+
+
+#git branch -m old_branch new_branch         # Rename branch locally
+#git push origin :old_branch                 # Delete the old branch
+#git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
