@@ -45,8 +45,10 @@ _g_chpwd()
   # Check for $0 to be 'zsh' because we don't want this happening in functions.
   # FIX: Doesn't work. ^^^
   #if [[ $SHLVL -lt 1 || $SKIP_CHPWD == true ]] ; then
-  if [[ $SKIP_CHPWD == true ]] ; then
-    return 0
+  if [ -n "${SKIP_CHPWD+x}" ]; then
+    if ( $SKIP_CHPWD ) ; then
+      return 0
+    fi
   fi
 
   # FIX: IMPORTANT: This is specific to you...
