@@ -3,7 +3,7 @@
 source $(dirname $0)/../g.zsh
 
 function _usage() {
-  echo "usage"
+  echo "usage: [BRANCH-TO-RENAME] <NEW-BRANCH-NAME>"
 }
 
 function _usage_and_exit() {
@@ -31,12 +31,17 @@ fi
 
 echo "This will rename branch $_current_branch_name to $_new_branch_name locally."
 echo
-echo "Afterwards, you'll be promppted to delete the old branch on origin and push the new one."
-echo
-_prompt_warning "Continue?"
 
+if ! _prompt_warning "Continue?"; then
+  exit
+fi
 
+git branch -m $_current_branch_name $_new_branch_name
 
-#git branch -m old_branch new_branch         # Rename branch locally
-#git push origin :old_branch                 # Delete the old branch
-#git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
+echo "Delete the old branch $_current_branch_name on origin and push the new branch to origin?"
+if ! _prompt_warning "Continue?"; then
+  exit
+fi
+
+git push origin :$_current_branch_name
+git push --set-upstream $_new_branch_name
