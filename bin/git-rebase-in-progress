@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+_git_dir=`git rev-parse --git-dir`
+_rebase_prefix="$_git_dir/rebase-merge"
+
+test -d "$_rebase_prefix" -o -d "$_git_dir"/rebase-apply
