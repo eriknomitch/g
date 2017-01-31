@@ -37,6 +37,15 @@ fi
 # Append g auxiliary scripts to $PATH
 export PATH=$PATH:$(dirname $0)/bin
 
+_g_ls()
+{
+  if [[ `uname` == "Darwin" ]] ; then
+    ls -lh -G
+  else
+    ls -lh --color
+  fi
+}
+
 # Change working directory Zsh rule
 _g_chpwd()
 {
@@ -52,10 +61,8 @@ _g_chpwd()
   fi
 
   # FIX: IMPORTANT: This is specific to you...
-  if [[ `uname` == "Darwin" && $SHLVL == 1 ]] ; then
-    ls -lh -G
-  else
-    ls -lh --color
+  if [[ $SHLVL == 1 || -n $TMUX ]] ; then
+    _g_ls
   fi
 
   if ( `pwd-is-git-repo --root` ) ; then
