@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+\git rebase $* || (\git rebase --abort; echo "fatal: The rebase had conflicts and has been aborted."; return 1)
