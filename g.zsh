@@ -108,8 +108,17 @@ _g_chpwd()
 
   if [[ -f .directory-metadata ]] ; then
     source .directory-metadata
+    _metadata_title=`echo -n "${On_IWhi}  ${Pur} $_directory_title ${RCol}${On_IWhi}  ${RCol}"`
+    _metadata_title_length=${#_directory_title}
+
+    _metadata_bar=`head -c $_metadata_title_length < /dev/zero | tr '\0' '-'`"------"
+
+
+    #echo "${On_IWhi}$_metadata_bar${RCol}"
     echo
-    echo "- ${BPur}$_directory_title${RCol} -"
+    echo $_metadata_title
+    echo
+    #echo "${On_IWhi}$_metadata_bar${RCol}"
     echo
   fi
 }
