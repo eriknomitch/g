@@ -522,7 +522,17 @@ function _git_commit_with_message()
 
   # Otherwise, just the argument
   else
-    _commit_message=$*
+    _commit_message=$1
+
+    shift
+   
+    # If we still have arguments, we want to only commit
+    # these files.
+    _select_file=false
+    if [[ $# -gt 0 ]] ; then
+      _select_files="$*"
+    fi
+
   fi
   
   # Check for commit message
@@ -544,8 +554,15 @@ function _git_commit_with_message()
 
   # Perform the commit
   if [[ $? == 0 ]] ; then
-  
-    git commit --all --message "$_commit_message"
+
+    # We're committing all files
+    if [[ -z $_select_files ]] ; then
+      git commit --all --message "$_commit_message"
+
+    # We're only commiting certain files
+    else
+      git commit --message "$_commit_message" $_select_files
+    fi
 
     # Perform the push?
     if ( $_push ) ; then
