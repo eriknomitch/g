@@ -528,7 +528,8 @@ function _git_commit_with_message()
    
     # If we still have arguments, we want to only commit
     # these files.
-    _select_file=false
+    _select_files=""
+
     if [[ $# -gt 0 ]] ; then
       _select_files="$*"
     fi
