@@ -16,7 +16,7 @@ Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc
 Here's a one-liner:
 
 ```Bash
-$ git clone git@github.com:Prelang/g.git ~/.g && echo "source \$HOME/.g/g.zsh" >> ~/.zshrc
+$ git clone git@github.com:eriknomitch/g.git ~/.g && echo "source \$HOME/.g/g.zsh" >> ~/.zshrc
 ```
 
 Then, quit and restart your terminal instances.
