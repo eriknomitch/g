@@ -1,16 +1,14 @@
-g
-=
+# g
 A collection of Zsh functions to augment Git.
 
 ![g](https://raw.github.com/eriknomitch/g/master/misc/g.png)
 
-Requirements
-------------
+## Requirements
 * Zsh
 * Git
 
-Installation
-------------
+## Installation
+
 Clone the repository to `~/.g` and add `source $HOME/.g/g.zsh` to your `~/.zshrc`.
 
 Here's a one-liner:
@@ -21,14 +19,14 @@ $ git clone git@github.com:eriknomitch/g.git ~/.g && echo "source \$HOME/.g/g.zs
 
 Then, quit and restart your terminal instances.
 
-Commands
---------
+**Note:** If you use `oh-my-zsh` with the `git` plug-in, you'll have to disable it.
 
-###Status###
+## Commands
 
 **g**
 
 Without arguments, *g* will display a custom, colored, and formatted git status including:
+
 * Repository status (clean or unclean)
 * Current branch and number of branches
 * List of untracked files
@@ -36,7 +34,23 @@ Without arguments, *g* will display a custom, colored, and formatted git status 
 
 Any arguments to *g* will first try to match a shortcut.  If a *g* shortcut is not matched, arguments to *g* will fall back to git allowing usage of *g* as a normal alias to `git`.
 
-###Quick Commands###
+### Automatically Run `g` on Directory Change
+
+I highly recommend this.
+
+Add to the end of your `~/.zshrc` file:
+
+```Shell
+chpwd() { _g_chpwd }
+```
+
+One-liner:
+
+```Shell
+echo "chpwd() { _g_chpwd }" >> ~/.zshrc
+```
+
+### Quick Commands
 
 **g cm \<commit-message\>**
 
@@ -46,7 +60,7 @@ Any arguments to *g* will first try to match a shortcut.  If a *g* shortcut is n
 
 *Commit all with message and push*
 
-###Prompts###
+### Prompts
 
 **g au**
 
@@ -56,7 +70,7 @@ Prompts to add all untracked files in the current repository
 
 Prompts to remove all untracked files in the current directory
 
-###Aliases###
+### Aliases
 
 **g l**
 
