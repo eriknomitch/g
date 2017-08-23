@@ -569,7 +569,7 @@ function _git_commit_with_message()
 
     # Perform the push?
     if ( $_push ) ; then
-      git push --all
+      git push
     fi
 
     # Status display
@@ -614,7 +614,7 @@ function _git_commit_line_diff()
     git commit --all --message "$_commit_message"
 
     if ( $_push ) ; then
-      git push --all
+      git push
     fi
   fi
 }
