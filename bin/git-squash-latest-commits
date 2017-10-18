@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+source $(dirname $0)/../g.zsh
+
+if [[ -z $1 ]] ; then
+  echo "usage: git-squash-latest-commits <number-of-previous-commits>"
+  exit 1
+fi
+
+if ! git-is-clean-work-tree; then
+  echo "fatal: Your work tree is not clean. Stash or commit first."
+  exit 1
+fi
+
+# ------------------------------------------------
+# MAIN -------------------------------------------
+# ------------------------------------------------
+_latest_n=$1
+
+git log -n $_latest_n --oneline
+echo
+
+if _prompt_warning "Squash these commits?"; then
+  git reset --soft HEAD~$_latest_n && \
+    git commit && \
+    echo "Squashed/committed. You may need to 'git push --force' since this changed history."
+fi
+
