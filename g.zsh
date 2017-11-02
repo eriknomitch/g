@@ -422,6 +422,9 @@ _define_command cg  "_git_chained_grep"
 # Ammend message
 _define_command am   "_git_ammend_message"
 
+# Rebase Continue (adds and continues)
+_define_command rc "_rebase_continue"
+
 # cg: Chained Grep
 # ------------------------------------------------
 # Run a command and commit with the message of the command.
@@ -648,6 +651,18 @@ function _git_ammend_message()
     _prompt_and_force_push
 
   fi
+}
+
+# rc: Rebase continue
+# ------------------------------------------------
+function _git_rebase_continue()
+{
+  if ! git add .; then
+    echo "fatal: Could not add files to track."
+    exit 1
+  fi
+
+  git rebase --continue
 }
 
 # ------------------------------------------------
