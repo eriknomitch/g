@@ -423,7 +423,7 @@ _define_command cg  "_git_chained_grep"
 _define_command am   "_git_ammend_message"
 
 # Rebase Continue (adds and continues)
-_define_command rc "_rebase_continue"
+_define_command rc "_git_rebase_continue"
 
 # cg: Chained Grep
 # ------------------------------------------------
