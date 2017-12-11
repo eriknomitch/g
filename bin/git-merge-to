@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+source $(dirname $0)/../g.zsh
+
 _branch_destination=$1
 _branch_current=`git-branch-current`
 
@@ -8,11 +10,25 @@ if [[ -z $_branch_destination ]] ; then
   return 1
 fi
 
-prompt "Are you sure you want to merge '$_branch_current' into '$_branch_destination'?" || exit 1
+_prompt_warning "Are you sure you want to merge '$_branch_current' into '$_branch_destination'?" || exit 1
 
+echo "Checking out '$_branch_destination'"
 git checkout $_branch_destination || exit 1
+
+echo "Merging '$_branch_current'"
 git merge $_branch_current || exit 1
+
+echo
+echo "Merge successful."
+echo
+
+if _prompt_success "Push '$_branch_destination' to default remote?"; then
+  git push
+fi
+
+echo "Checking out '$_branch_current'"
 git checkout $_branch_current || exit 1
 
+echo
 echo "Success. Merged '$_branch_current' into '$_branch_destination' and returned to '$_branch_current'"
 
