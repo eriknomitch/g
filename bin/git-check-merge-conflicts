@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+if [[ -z $1 ]] ; then
+  echo "usage: git-branch-conflicts-with <BRANCH>"
+  exit 1
+fi
+
+_branch=$1
+
+git merge --no-ff --no-commit $_branch
+
+echo
+echo
+echo "Conflicting files:"
+git-ls-conflicting-fiiles
+echo
+
+git merge --abort
