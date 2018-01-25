@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+autoload colors
+colors
+
 if [[ -z $1 ]] ; then
   echo "usage: git-branch-conflicts-with <BRANCH>"
   exit 1
@@ -8,10 +11,20 @@ fi
 _branch=$1
 
 git merge --no-ff --no-commit $_branch
+echo
 
-echo
-echo "Conflicting files:"
-git-ls-conflicting-files
-echo
+if [[ `git-ls-conflicting-files | wc -l` -gt 0 ]] ; then
+  print $fg_bold[yellow] "Conflicting files" $reset_color
+
+  echo
+
+  for file in `git-ls-conflicting-files`; do
+    _conflicts=`\grep "<<<<<<< HEAD" $file | wc -l | sed "s/ //g"`
+    print "   $fg[red]" "("$_conflicts")"$fg_bold[white] $file$reset_color
+  done
+
+  echo
+
+fi
 
 git merge --abort
