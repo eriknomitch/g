@@ -10,9 +10,8 @@ _branch=$1
 git merge --no-ff --no-commit $_branch
 
 echo
-echo
 echo "Conflicting files:"
-git-ls-conflicting-fiiles
+git-ls-conflicting-files
 echo
 
 git merge --abort
