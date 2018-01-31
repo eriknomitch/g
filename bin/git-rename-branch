@@ -44,4 +44,4 @@ if ! _prompt_warning "Continue?"; then
 fi
 
 git push origin :$_current_branch_name
-git push --set-upstream $_new_branch_name
+git push --set-upstream $_new_branch_name origin
