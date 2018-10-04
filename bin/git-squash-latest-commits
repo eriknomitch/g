@@ -2,7 +2,7 @@
 
 source $(dirname $0)/../g.zsh
 
-if [[ -z $1 ]] ; then
+if [[ -z $1 || $1 == "--help" || $1 == "-h" ]] ; then
   echo "usage: git-squash-latest-commits <number-of-previous-commits>"
   exit 1
 fi
