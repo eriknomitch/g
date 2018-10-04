@@ -20,9 +20,10 @@ _latest_n=$1
 git log -n $_latest_n --oneline
 echo
 
-if _prompt_warning "Squash these commits?"; then
+if _prompt_warning "Squash these commits? You'll be able to edit the new commit message will start as these combined."; then
+  # SEE: https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git/5201642#5201642
   git reset --soft HEAD~$_latest_n && \
-    git commit && \
+    git commit --edit -m"$(git log --format=%B --reverse HEAD..HEAD@{$_latest_n})" && \
     echo "Squashed/committed. You may need to 'git push --force' since this changed history."
 fi
 
