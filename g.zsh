@@ -57,10 +57,6 @@ _git_completion_path=`echo -n ${^fpath}/_git(N)`
 # CONFIG->ZSH ------------------------------------
 # ------------------------------------------------
 
-# Ensure compinit
-autoload -U compinit
-compinit
-
 # We source the existing Git rules here so we have access to various
 # autocompletion rules.
 if [[ -f $_git_completion_path ]] ; then
