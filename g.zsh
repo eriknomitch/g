@@ -759,6 +759,8 @@ function g()
 # ------------------------------------------------
 # COMPLETION -------------------------------------
 # ------------------------------------------------
+autoload -Uz compinit
+compinit
 
 # Actually set the compdef to git
 compdef g=git

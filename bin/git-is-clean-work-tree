@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # Ensure we're on a Git repo
 pwd-is-git-repo || return 1

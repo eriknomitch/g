@@ -1,10 +1,10 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 _branch=$1
 _remote=$2
 
 function _usage() {
-  echo "usage: git delete-branch-on-remote BRANCH REMOTE"
+  echo "usage: git delete-branch-on-remote BRANCH [REMOTE='origin']"
 }
 
 if [[ -z $_branch ]]; then
@@ -13,8 +13,7 @@ if [[ -z $_branch ]]; then
 fi
 
 if [[ -z $_remote ]]; then
-  _usage
-  exit 1
+  _remote="origin"
 fi
 
 git push $_remote :$_branch
