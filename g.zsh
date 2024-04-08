@@ -66,10 +66,17 @@ fi
 # Append g auxiliary scripts to $PATH
 export PATH=$PATH:$(dirname $0)/bin
 
+function _g_eza_tree() {
+  local options=(--icons --classify --oneline --long --no-permissions --no-user --time-style relative --git --level 1 --tree)
+  [[ $1 == 't' ]] && options+=(--sort time --reverse)
+  eza "${options[@]}"
+}
+
+
 _g_ls()
 {
-  if [[ `uname` == "Darwin" ]] ; then
-    ls -lh -G
+  if [[ `uname` == "Darwin" && -n `which eza` ]] ; then
+    _g_eza_tree t
   else
     ls -lh --color
   fi
