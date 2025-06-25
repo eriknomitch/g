@@ -13,7 +13,7 @@
 # 35 - magenta
 # 36 - cyan
 # 37 - white
-# 
+#
 # 0 - normal
 # 1 - bold
 # 2 - normal again
@@ -66,12 +66,11 @@ fi
 # Append g auxiliary scripts to $PATH
 export PATH=$PATH:$(dirname $0)/bin
 
-function _g_eza_tree() {
-  local options=(--icons --classify --oneline --long --no-permissions --no-user --time-style relative --git --level 1 --tree)
-  [[ $1 == 't' ]] && options+=(--sort time --reverse)
-  eza "${options[@]}"
+function _g_eza_tree () {
+    local options=(--icons --classify --oneline --long --no-permissions --no-user --time-style relative --git --level 0 --tree)
+    [[ $1 == 't' ]] && options+=(--sort time --reverse)
+    eza "${options[@]}"
 }
-
 
 _g_ls()
 {
@@ -104,7 +103,7 @@ _g_chpwd()
   if ( `pwd-is-git-repo --root` ) ; then
     git-status-display
   fi
-  
+
   if ( `pwd-is-git-repo --root` ) ; then
     echo -e "\033[30;1mpwd:\033[0m \033[33;2m`pwd-tilde`\033[0m"
   fi
@@ -408,12 +407,12 @@ _define_command cs  "_git_commit_with_message -s"
 _define_command csp "_git_commit_with_message -p -s"
 
 # Commit with auto smart diff
-_define_command ca  "_git_commit_with_message -a" 
-_define_command cap "_git_commit_with_message -p -a" 
+_define_command ca  "_git_commit_with_message -a"
+_define_command cap "_git_commit_with_message -p -a"
 
 # Commit with line diff
-_define_command cl   "_git_commit_line_diff" 
-_define_command clp  "_git_commit_line_diff -p" 
+_define_command cl   "_git_commit_line_diff"
+_define_command clp  "_git_commit_line_diff -p"
 
 # Shell commands
 # FIX: Make this _git_execute and "x"
@@ -487,12 +486,12 @@ function _git_commit_with_message()
     _push=true
     shift
   fi
-  
+
   if [[ $status_as_message == "-s" ]] ; then
     _status_as_message=true
     shift
   fi
-  
+
   if [[ $auto_as_message == "-a" ]] ; then
     _auto_as_message=true
     shift
@@ -500,7 +499,7 @@ function _git_commit_with_message()
 
   # Set commit message to something special?
   local _commit_message
-  
+
   # Short stat:
   if ( $_status_as_message ) ; then
 
@@ -533,7 +532,7 @@ function _git_commit_with_message()
     _commit_message=$1
 
     shift
-   
+
     # If we still have arguments, we want to only commit
     # these files.
     _select_files=""
@@ -543,7 +542,7 @@ function _git_commit_with_message()
     fi
 
   fi
-  
+
   # Check for commit message
   if [[ -z $_commit_message ]] ; then
     echo "fatal: Cannot commit with an empty message."
@@ -674,7 +673,7 @@ function _git_rebase_continue()
 function _usage()
 {
   echo "usage: g [<aliased g command>|<git command>]"
-  echo 
+  echo
   echo "The g git aliases are:"
 
   for (( index = 1; index <= $_commands_length ; index++ )) ; do
